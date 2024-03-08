@@ -47,11 +47,9 @@ export const getUserProfile = async (req, res) => {
             throw new Error("Any user found to retireve")
         }
 
-
-
         res.status(200).json({
             success: true,
-            message: "all users retrieved",
+            message: "User retrieved",
             data: user
         })
 
@@ -64,39 +62,88 @@ export const getUserProfile = async (req, res) => {
     }
 }
 
+export const updateUserProfile = async (req, res) => {
 
-export const addBookToFavourite = async (req, res) => {
     try {
-        const bookId = req.body.bookId;
-        // debe venir por el token
-        const userId = req.body.userId;
+        const userId = req.tokenData.userId
+        const firstName = req.body.firstName
+        const lastName = req.body.lastName
+        const email = req.body.email
 
-        const user = await User.findOne(
+        const queryFilters = {
+            firstName: undefined,
+            lastName: undefined,
+            email: undefined
+        }
+
+        const userUpdated = await User.findOneAndUpdate(
             {
-                _id: userId
-            }
-        )
-
-        // console.log(user);
-
-        //validacion de si el user existe
-
-        user.favouriteBooks.push(bookId);
-        await user.save();
-
-        res.status(200).json(
+              _id: userId 
+            },
             {
-                success: true,
-                message: `Book added to user as favourite`,
-            }
-        )
+              firstName,
+              lastName,
+              email
+            },
+            {
+              new: true
+            },
+          )
+          .select('-_id -password -createdAt -updatedAt')
+      
+
+
+        res.status(200).json({
+            success: true,
+            message: "User retrieved",
+            data: userUpdated
+        })
+
     } catch (error) {
-        res.status(500).json(
-            {
-                success: false,
-                message: "Book cant added to user as favourite",
-                error: error.message
-            }
-        )
+        if (error.message === "Any user found to retireve") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant retrieve any book", 500)
     }
 }
+
+
+
+
+
+// export const addBookToFavourite = async (req, res) => {
+//     try {
+//         const bookId = req.body.bookId;
+//         // debe venir por el token
+//         const userId = req.body.userId;
+
+//         const user = await User.findOne(
+//             {
+//                 _id: userId
+//             }
+//         )
+
+//         // console.log(user);
+
+//         //validacion de si el user existe
+
+//         user.favouriteBooks.push(bookId);
+//         await user.save();
+
+//         res.status(200).json(
+//             {
+//                 success: true,
+//                 message: `Book added to user as favourite`,
+//             }
+//         )
+//     } catch (error) {
+//         res.status(500).json(
+//             {
+//                 success: false,
+//                 message: "Book cant added to user as favourite",
+//                 error: error.message
+//             }
+//         )
+//     }
+// }
