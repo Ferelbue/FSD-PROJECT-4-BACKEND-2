@@ -1,8 +1,8 @@
 // IMPORTAMOS DEPENDENCIAS DE LIBRERIAS
 import express from "express";
 import "dotenv/config";
-import { dbConnection } from "./database/db.js";
-import router from "./routes/router.js"
+import { dbConnection } from "./db.js";
+import router from "./router.js"
 
 const app = express();
 
