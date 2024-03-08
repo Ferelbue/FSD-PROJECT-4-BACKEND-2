@@ -23,7 +23,6 @@ export const auth = async (req, res, next) => {
 
         req.tokenData = decoded
 
-
         next()
     } catch (error) {
         return res.status(500).json(

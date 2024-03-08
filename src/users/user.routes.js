@@ -1,11 +1,14 @@
 
 import { Router } from "express";
-import { login, register } from "../auth/auth.controller.js";
+import { getUserProfile, getUsers } from "./user.controller.js";
+import { isSuperAdmin } from "../middlewares/isSuperAdmin.js";
+import { auth } from "../middlewares/auth.js";
 
 const router = Router()
 
-// router.post('/register', register)
-// router.post('/login', login)
+router.get('/',auth, getUsers)
+router.get('/profile',auth, getUserProfile)
+
 
 export default router
 

@@ -1,4 +1,5 @@
 
+import { handleError } from "../utils/handleError.js";
 import User from "./User.js";
 
 
@@ -6,7 +7,15 @@ import User from "./User.js";
 export const getUsers = async (req, res) => {
 
     try {
-        const users = await getUsersService()
+        const users = await User
+            .find()
+            .select('-_id -password -createdAt -updatedAt')
+
+        if (!users) {
+            throw new Error("Any user found to retireve")
+        }
+
+
 
         res.status(200).json({
             success: true,
@@ -15,15 +24,45 @@ export const getUsers = async (req, res) => {
         })
 
     } catch (error) {
-        if (error.message === "Password must contain between 6 and 10 characters") {
+        if (error.message === "Any user found to retireve") {
             return handleError(res, error.message, 400)
         }
 
-        handleError(res, "Cant create book", 500)
+        handleError(res, "Cant retrieve any book", 500)
     }
 }
 
+export const getUserProfile = async (req, res) => {
 
+    try {
+        const name = req.body.name
+        console.log(name)
+        const userId = req.tokenData.userId
+        console.log(userId)
+        const user = await User
+            .findById(userId)
+            .select('-_id -password -createdAt -updatedAt')
+
+        if (!user) {
+            throw new Error("Any user found to retireve")
+        }
+
+
+
+        res.status(200).json({
+            success: true,
+            message: "all users retrieved",
+            data: user
+        })
+
+    } catch (error) {
+        if (error.message === "Any user found to retireve") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant retrieve any book", 500)
+    }
+}
 
 
 export const addBookToFavourite = async (req, res) => {
