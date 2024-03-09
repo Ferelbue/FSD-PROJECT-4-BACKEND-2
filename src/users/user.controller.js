@@ -2,8 +2,6 @@
 import { handleError } from "../utils/handleError.js";
 import User from "./User.js";
 
-
-
 export const getUsers = async (req, res) => {
 
     try {
@@ -70,6 +68,10 @@ export const updateUserProfile = async (req, res) => {
         const lastName = req.body.lastName
         const email = req.body.email
 
+        if (!userId || !firstName || !lastName || !email) {
+            throw new Error("You should to introuce any data to update")
+        }
+
         const queryFilters = {
             firstName: undefined,
             lastName: undefined,
@@ -78,19 +80,19 @@ export const updateUserProfile = async (req, res) => {
 
         const userUpdated = await User.findOneAndUpdate(
             {
-              _id: userId 
+                _id: userId
             },
             {
-              firstName,
-              lastName,
-              email
+                firstName,
+                lastName,
+                email
             },
             {
-              new: true
+                new: true
             },
-          )
-          .select('-_id -password -createdAt -updatedAt')
-      
+        )
+            .select('-_id -password -createdAt -updatedAt')
+
 
 
         res.status(200).json({
@@ -100,50 +102,101 @@ export const updateUserProfile = async (req, res) => {
         })
 
     } catch (error) {
-        if (error.message === "Any user found to retireve") {
+        if (error.message === "You should to introuce any data to update") {
             return handleError(res, error.message, 400)
         }
 
-        handleError(res, "Cant retrieve any book", 500)
+        handleError(res, "Cant update any propery", 500)
+    }
+}
+
+// interface queryFilters {
+//     email?: FindOperator<string>,
+//     firstName?: FindOperator<string>,
+//     lastName?: FindOperator<string>
+// }
+// // Se declara la constante queryFiters de tipo queryFilters
+// const queryFilters: queryFilters = {}
+
+// if (req.query.email) {
+//     queryFilters.email = Like("%" + req.query.email.toString() + "%");
+// }
+
+export const deleteUserById = async (req, res) => {
+
+    try {
+        const userId = req.params.id
+
+        const userUpdated = await User.findOneAndDelete(
+            {
+                _id: userId
+            }
+        )
+            .select('-_id -password -createdAt -updatedAt')
+
+            if (!userUpdated) {
+                throw new Error("Any user found to update")
+            }
+
+        res.status(200).json({
+            success: true,
+            message: "User deleted",
+            data: userUpdated
+        })
+
+    } catch (error) {
+        if (error.message === "Any user found to update") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant update any propery", 500)
     }
 }
 
 
+export const updateUserRole = async (req, res) => {
+
+    try {
+        console.log(1)
+        const userId = req.params.id
+        const role = req.body.role
+
+        if (!role) {
+            throw new Error("You should to introuce any data to update")
+        }
+
+        const queryFilters = {
+            firstName: undefined,
+            lastName: undefined,
+            email: undefined
+        }
+
+        const userUpdated = await User.findOneAndUpdate(
+            {
+                _id: userId
+            },
+            {
+                role
+            },
+            {
+                new: true
+            },
+        )
+            .select('-_id -password -createdAt -updatedAt')
 
 
 
-// export const addBookToFavourite = async (req, res) => {
-//     try {
-//         const bookId = req.body.bookId;
-//         // debe venir por el token
-//         const userId = req.body.userId;
+        res.status(200).json({
+            success: true,
+            message: "User retrieved",
+            data: userUpdated
+        })
 
-//         const user = await User.findOne(
-//             {
-//                 _id: userId
-//             }
-//         )
+    } catch (error) {
+        if (error.message === "You should to introuce any data to update") {
+            return handleError(res, error.message, 400)
+        }
 
-//         // console.log(user);
-
-//         //validacion de si el user existe
-
-//         user.favouriteBooks.push(bookId);
-//         await user.save();
-
-//         res.status(200).json(
-//             {
-//                 success: true,
-//                 message: `Book added to user as favourite`,
-//             }
-//         )
-//     } catch (error) {
-//         res.status(500).json(
-//             {
-//                 success: false,
-//                 message: "Book cant added to user as favourite",
-//                 error: error.message
-//             }
-//         )
-//     }
-// }
+        handleError(res, "Cant update any propery", 500)
+    }
+}
