@@ -11,9 +11,10 @@ export const register = async (req, res) => {
     try {
 
         //Retrive data
+        const firstName = req.body.firstName
+        const lastName = req.body.lastName
         const email = req.body.email
         const password = req.body.password
-        const name = req.body.name
 
         //Password validation
         if (password.length < 6 || password.length > 20) {
@@ -35,13 +36,15 @@ export const register = async (req, res) => {
             {
                 email: email,
                 password: passwordEncrypted,
-                name: name
+                firstName: firstName,
+                lastName: lastName
             }
         )
 
         //Data response
         const printUser = {
-            name: newUser.name,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
             email: newUser.email,
             role: newUser.role
         }

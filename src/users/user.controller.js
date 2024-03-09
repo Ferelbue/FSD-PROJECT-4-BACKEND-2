@@ -5,8 +5,24 @@ import User from "./User.js";
 export const getUsers = async (req, res) => {
 
     try {
+
+        const queryFilters = {}
+        console.log(1)
+        // Se declara la constante queryFiters de tipo queryFilters
+
+        if (req.query.firstName) {
+            queryFilters.firstName = new RegExp(req.query.firstName);
+        }
+        if (req.query.lastName) {
+            queryFilters.lastName = new RegExp(req.query.lastName);
+        }
+        if (req.query.email) {
+            queryFilters.email = new RegExp(req.query.email);
+        }
+
+
         const users = await User
-            .find()
+            .find(queryFilters)
             .select('-_id -password -createdAt -updatedAt')
 
         if (!users) {
@@ -134,9 +150,9 @@ export const deleteUserById = async (req, res) => {
         )
             .select('-_id -password -createdAt -updatedAt')
 
-            if (!userUpdated) {
-                throw new Error("Any user found to update")
-            }
+        if (!userUpdated) {
+            throw new Error("Any user found to update")
+        }
 
         res.status(200).json({
             success: true,
