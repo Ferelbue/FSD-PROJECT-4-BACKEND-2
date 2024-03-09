@@ -5,7 +5,7 @@ export const UserSchema = new Schema(
     {
         firstName: {
             type: String,
-            required: false
+            required: true
         },
         lastName: {
             type: String,
