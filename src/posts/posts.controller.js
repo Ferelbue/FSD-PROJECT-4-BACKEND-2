@@ -176,7 +176,7 @@ export const getUserPosts = async (req, res) => {
 
         const userPosts = await Post
             .find({userId:userId})
-            .select('-_id -userId')
+            .select('-_id -password -createdAt -updatedAt')
 
         console.log(userPosts)
 
@@ -199,7 +199,69 @@ export const getUserPosts = async (req, res) => {
     }
 }
 
+export const getPosts = async (req, res) => {
 
+    try {
+
+        const userId = req.tokenData.userId
+
+        const posts = await Post
+            .find()
+            .select('-_id -password -createdAt -updatedAt')
+
+        if (!posts) {
+            throw new Error("Any post found to retireve")
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "User retrieved",
+            data: posts
+        })
+
+    } catch (error) {
+        if (error.message === "Any post found to retireve") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant retrieve any book", 500)
+    }
+}
+
+
+export const getPostById = async (req, res) => {
+
+    try {
+        const postId = req.params.id
+        const userId = req.tokenData.userId
+
+        const post = await Post.findById(postId)
+
+        if (!post) {
+            throw new Error("Any post to retrieve")
+        }
+
+        if (userId !== post.userId) {
+            throw new Error("Cant retrieve another person post")
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Post retrieved succesfully",
+            data: post
+        })
+
+    } catch (error) {
+        if (error.message === "Any post to update") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "Cant retrieve another person post") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant rerieve any post", 500)
+    }
+}
 
 
 
