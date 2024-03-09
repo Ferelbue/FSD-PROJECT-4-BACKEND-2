@@ -16,6 +16,11 @@ export const PostSchema = new Schema(
             type: String,
             required: true,
         },
+        like: {
+            type: Boolean,
+            require: false,
+            default: false,
+        }
     },
     {
         timestamps: true,

@@ -127,18 +127,6 @@ export const updateUserProfile = async (req, res) => {
     }
 }
 
-// interface queryFilters {
-//     email?: FindOperator<string>,
-//     firstName?: FindOperator<string>,
-//     lastName?: FindOperator<string>
-// }
-// // Se declara la constante queryFiters de tipo queryFilters
-// const queryFilters: queryFilters = {}
-
-// if (req.query.email) {
-//     queryFilters.email = Like("%" + req.query.email.toString() + "%");
-// }
-
 export const deleteUserById = async (req, res) => {
 
     try {
@@ -169,7 +157,6 @@ export const deleteUserById = async (req, res) => {
         handleError(res, "Cant update any propery", 500)
     }
 }
-
 
 export const updateUserRole = async (req, res) => {
 
@@ -227,7 +214,6 @@ export const getPostByUserId = async (req, res) => {
         .find({userId:userId})
         .select("-_id -userId -updatedAt")
         
-
         if (!posts) {
             throw new Error("Any post to retrieve")
         }

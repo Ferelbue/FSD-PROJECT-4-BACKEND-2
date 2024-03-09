@@ -1,13 +1,11 @@
 
 import mongoose from "mongoose";
 
-export const dbConnection = () => {
+export const dbConnection = async () => {
 
-    return mongoose.connect(
+    return await mongoose.connect(
         process.env.MONGO_URI,
         {}
         )
 
 }
-
-
