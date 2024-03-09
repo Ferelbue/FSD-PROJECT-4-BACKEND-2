@@ -252,7 +252,7 @@ export const getPostById = async (req, res) => {
         })
 
     } catch (error) {
-        if (error.message === "Any post to update") {
+        if (error.message === "Any post to retrieve") {
             return handleError(res, error.message, 400)
         }
         if (error.message === "Cant retrieve another person post") {
@@ -262,6 +262,7 @@ export const getPostById = async (req, res) => {
         handleError(res, "Cant rerieve any post", 500)
     }
 }
+
 
 
 

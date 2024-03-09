@@ -216,3 +216,29 @@ export const updateUserRole = async (req, res) => {
         handleError(res, "Cant update any propery", 500)
     }
 }
+
+export const getPostByUserId = async (req, res) => {
+
+    try {
+        const userId = req.params.userId
+        console.log(userId)
+        const posts = await Post.findById(userId)
+
+        if (!posts) {
+            throw new Error("Any post to retrieve")
+        }
+
+           res.status(200).json({
+            success: true,
+            message: "Post retrieved succesfully",
+            data: posts
+        })
+
+    } catch (error) {
+        if (error.message === "Any post to retrieve") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant rerieve any post", 500)
+    }
+}

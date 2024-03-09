@@ -11,7 +11,7 @@ router.get('/profile',auth, getUserProfile)
 router.put('/profile',auth, updateUserProfile)
 router.delete('/:id',auth, deleteUserById)
 router.put('/:id/role', updateUserRole)
-
+router.get('/posts/userId',auth, getPostByUserId)
 
 export default router
 
