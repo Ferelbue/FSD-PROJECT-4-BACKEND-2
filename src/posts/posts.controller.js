@@ -52,19 +52,35 @@ export const createPost = async (req, res) => {
     }
 }
 
+
+
+
+
+
 export const deletePostById = async (req, res) => {
 
     try {
         const postId = req.params.id
-        
+        const userId = req.tokenData.userId
+
+        const post = await Post.findById(postId)
+
+        if (!post) {
+            throw new Error("Any post to delete")
+        }
+
+        if (userId !== post.userId) {
+            throw new Error("Cant delete another person post")
+        }
+
         const postToDelete = await Post.findOneAndDelete(
             {
                 _id: postId
             }
-            )
-            console.log(postId)
-            console.log(postToDelete)
+        )
+
             .select('-_id -description -updatedAt')
+
 
         if (!postToDelete) {
             throw new Error("Any post to update")
@@ -77,7 +93,10 @@ export const deletePostById = async (req, res) => {
         })
 
     } catch (error) {
-        if (error.message === "Any user found to update") {
+        if (error.message === "Any post to update") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "Cant modificate another person post") {
             return handleError(res, error.message, 400)
         }
 
@@ -88,6 +107,97 @@ export const deletePostById = async (req, res) => {
 
 
 
+
+export const updatePostById = async (req, res) => {
+
+    try {
+        const userId = req.tokenData.userId
+        const postId = req.params.id
+
+        const title = req.body.title
+        const description = req.body.description
+
+        const post = await Post.findById(postId)
+
+        if (!title && !description) {
+            throw new Error("You should to introuce any data to update")
+        }
+
+        if (!post) {
+            throw new Error("Any post to update")
+        }
+
+        if (userId !== post.userId) {
+            throw new Error("Cant modificate another person post")
+        }
+
+        const postUpdated = await Post.findOneAndUpdate(
+            {
+                _id: postId
+            },
+            {
+                title,
+                description
+            },
+            {
+                new: true
+            },
+        )
+            .select('-_id -userId -createdAt ')
+
+        res.status(200).json({
+            success: true,
+            message: "User updated",
+            data: postUpdated
+        })
+
+    } catch (error) {
+        if (error.message === "You should to introuce any data to update") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "Cant modificate another person post") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "Any post to update") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant update any post", 500)
+    }
+}
+
+
+
+export const getUserPosts = async (req, res) => {
+
+    try {
+
+        const userId = req.tokenData.userId
+
+        const userPosts = await Post
+            .find({userId:userId})
+            .select('-_id -userId')
+
+        console.log(userPosts)
+
+        if (!userPosts) {
+            throw new Error("Any user found to retireve")
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "User retrieved",
+            data: userPosts
+        })
+
+    } catch (error) {
+        if (error.message === "Any user found to retireve") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant retrieve any book", 500)
+    }
+}
 
 
 
