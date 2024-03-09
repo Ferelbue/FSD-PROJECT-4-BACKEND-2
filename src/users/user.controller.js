@@ -1,6 +1,7 @@
 
 import { handleError } from "../utils/handleError.js";
 import User from "./User.js";
+import Post from "../posts/Posts.js";
 
 export const getUsers = async (req, res) => {
 
@@ -222,7 +223,10 @@ export const getPostByUserId = async (req, res) => {
     try {
         const userId = req.params.userId
         console.log(userId)
-        const posts = await Post.findById(userId)
+        const posts = await Post
+        .find({userId:userId})
+        .select("-_id -userId -updatedAt")
+        
 
         if (!posts) {
             throw new Error("Any post to retrieve")
