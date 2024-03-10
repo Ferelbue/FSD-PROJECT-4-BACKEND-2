@@ -225,18 +225,18 @@ export const getPosts = async (req, res) => {
                 message: "User retrieved",
                 data: posts
             })
+
         } else {
             for (let i = 0; i < posts.length; i++) {
                 const userPublicPosts = await User
                     .find({ _id: posts[i].userId, public: true })
                     .select('-_id -password -createdAt -updatedAt')
-                    .skip(skip)
-                    .limit(pageElements);
 
                 if (userPublicPosts.length >  0) {
                     publicPosts.push(posts[i])
                 }
             }
+    
             return res.status(200).json({
                 success: true,
                 message: "User retrieved",
