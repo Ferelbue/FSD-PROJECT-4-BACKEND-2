@@ -12,7 +12,7 @@ export const createPost = async (req, res) => {
         const description = req.body.description
 
         const user = await User.findById(userId)
-        
+
         //Data validation
         if (!title && !description) {
             throw new Error("You should to introuce any data to update")
@@ -59,13 +59,20 @@ export const deletePostById = async (req, res) => {
         const postId = req.params.id
         const userId = req.tokenData.userId
 
+        const userLoged = req.tokenData.userId
+        const roleLoged = req.tokenData.roleName
+
         const post = await Post.findById(postId)
+
+        if ((userLoged !== post.userId) && (roleLoged !== "super-admin")) {
+            throw new Error("You dont have permitions to modidy this role")
+        }
 
         if (!post) {
             throw new Error("Any post to delete")
         }
 
-        if (userId !== post.userId) {
+        if ((userId !== post.userId) && ((roleLoged !== "super-admin"))) {
             throw new Error("Cant delete another person post")
         }
 
@@ -74,9 +81,7 @@ export const deletePostById = async (req, res) => {
                 _id: postId
             }
         )
-
             .select('-_id -description -updatedAt')
-
 
         if (!postToDelete) {
             throw new Error("Any post to update")
@@ -168,11 +173,11 @@ export const getUserPosts = async (req, res) => {
         const userId = req.tokenData.userId
 
         const userPosts = await Post
-            .find({userId:userId})
+            .find({ userId: userId })
             .select('-_id -password -createdAt -updatedAt')
             .skip(skip)
             .limit(pageElements);
-            
+
         if (!userPosts) {
             throw new Error("Any user found to retireve")
         }
@@ -200,7 +205,7 @@ export const getPosts = async (req, res) => {
         const actualPage = req.query.page;
         const skip = (actualPage - 1) * pageElements;
 
-        const userId = req.tokenData.userId
+        const roleName = req.tokenData.roleName
 
         const posts = await Post
             .find()
@@ -212,11 +217,32 @@ export const getPosts = async (req, res) => {
             throw new Error("Any post found to retireve")
         }
 
-        res.status(200).json({
-            success: true,
-            message: "User retrieved",
-            data: posts
-        })
+        let publicPosts = []
+        //Retrieve all post if you are superAdmind and all public user post if you are a user
+        if (roleName === "super-admin") {
+            return res.status(200).json({
+                success: true,
+                message: "User retrieved",
+                data: posts
+            })
+        } else {
+            for (let i = 0; i < posts.length; i++) {
+                const userPublicPosts = await User
+                    .find({ _id: posts[i].userId, public: true })
+                    .select('-_id -password -createdAt -updatedAt')
+                    .skip(skip)
+                    .limit(pageElements);
+
+                if (userPublicPosts.length >  0) {
+                    publicPosts.push(posts[i])
+                }
+            }
+            return res.status(200).json({
+                success: true,
+                message: "User retrieved",
+                data: publicPosts
+            })
+        }
 
     } catch (error) {
         if (error.message === "Any post found to retireve") {
@@ -260,20 +286,20 @@ export const getPostById = async (req, res) => {
 
         handleError(res, "Cant rerieve any post", 500)
     }
-}    
+}
 
 
 export const postLike = async (req, res) => {
-                                                                                                                                          
+
     try {
-   
+
         const postId = req.params.id
 
         let like;
 
         const post = await Post.findById(postId)
-        
-        post.like === true ? like = false : like = true       
+
+        post.like === true ? like = false : like = true
         // const post = await Post.findById(postId)
 
         const postUpdated = await Post.findOneAndUpdate(
