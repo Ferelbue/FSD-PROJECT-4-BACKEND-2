@@ -254,3 +254,113 @@ export const getPostByUserId = async (req, res) => {
         handleError(res, "Cant rerieve any post", 500)
     }
 }
+
+export const followUserById = async (req, res) => {
+
+    try {
+
+        const userToFollow = req.params.userId
+        const userFollower = req.tokenData.userId
+
+        if (!userToFollow) {
+            throw new Error("You should to introuce user to follow")
+        }
+
+        const userFollowerUpdated = await User.findOne(
+            {
+                _id: userFollower
+            },
+        )
+
+        const userToFollowUpdated = await User.findOne(
+            {
+                _id: userToFollow
+            },
+        )
+
+        const userFollowerId = userFollowerUpdated._id.toString()
+
+        for (let i = 0; i < userToFollowUpdated.follower.length; i++) {
+
+            if (userToFollowUpdated.follower[i].toString() === userFollowerId) {
+
+                userToFollowUpdated.follower.splice(i, 1)
+                await userToFollowUpdated.save();
+
+                for (let j = 0; j < userFollowerUpdated.following.length; j++) {
+
+                    if (userFollowerUpdated.following[j].toString() === userToFollow) {
+                        userFollowerUpdated.following.splice(j, 1)
+                        await userFollowerUpdated.save()
+                        console.log('asdsadsadada')
+
+                        const printUserFollowerUpdated = await User.find(
+                            {
+                                _id: userFollower
+                            }
+                        ).select('-_id -password -role -public -createdAt -updatedAt')
+                
+                        const printUserToFollowUpdated = await User.find(
+                            {
+                                _id: userToFollow
+                            }
+                        ).select('-_id -password -role -public -createdAt -updatedAt')
+
+                        return res.status(200).json({
+                            success: true,
+                            message: "Users updated",
+                            data: printUserToFollowUpdated, printUserFollowerUpdated
+                        })
+
+                    }
+                }
+            }
+
+        }
+
+        userFollowerUpdated.following.push(userToFollow);
+        await userFollowerUpdated.save();
+
+        userToFollowUpdated.follower.push(userFollower);
+        await userToFollowUpdated.save();
+
+        if (!userToFollowUpdated) {
+            throw new Error("Any user found to update")
+        }
+
+        const printUserFollowerUpdated = await User.find(
+            {
+                _id: userFollower
+            }
+        ).select('-_id -password -role -public -createdAt -updatedAt')
+
+        const printUserToFollowUpdated = await User.find(
+            {
+                _id: userToFollow
+            }
+        ).select('-_id -password -role -public -createdAt -updatedAt')
+
+
+        return res.status(200).json({
+            success: true,
+            message: "Users updated",
+            data: printUserToFollowUpdated, printUserFollowerUpdated
+        })
+
+    } catch (error) {
+        if (error.message === "You should to introuce any data to update") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "You already follow this user") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "You dont have permitions to modidy this role") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "Any user found to update") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant update any propery", 500)
+    }
+}

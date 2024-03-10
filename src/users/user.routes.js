@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { deleteUserById, getPostByUserId, getUserProfile, getUsers, updateUserProfile, updateUserRole } from "./user.controller.js";
+import { deleteUserById, followUserById, getPostByUserId, getUserProfile, getUsers, updateUserProfile, updateUserRole } from "./user.controller.js";
 import { isSuperAdmin } from "../middlewares/isSuperAdmin.js";
 import { auth } from "../middlewares/auth.js";
 
@@ -12,6 +12,7 @@ router.put('/profile', auth, updateUserProfile)
 router.delete('/:id', auth, deleteUserById)
 router.put('/:id/role', auth, updateUserRole)
 router.get('/posts/:userId', auth, getPostByUserId)
+router.put('/follow/:userId', auth, followUserById)
 
 export default router
 

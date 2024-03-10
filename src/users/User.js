@@ -31,6 +31,18 @@ export const UserSchema = new Schema(
             required: true,
             default: false
         },
+        following: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ],
+        follower: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ]
     },
     {
         timestamps: true,
