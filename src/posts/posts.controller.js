@@ -6,16 +6,17 @@ import Post from "./Posts.js";
 export const createPost = async (req, res) => {
 
     try {
-
         //Retrive data
         const userId = req.tokenData.userId
         const title = req.body.title
         const description = req.body.description
 
         const user = await User.findById(userId)
-
-        //Password validation
-
+        
+        //Data validation
+        if (!title && !description) {
+            throw new Error("You should to introuce any data to update")
+        }
 
         //Create in data base
         const newPost = await Post.create({
@@ -40,7 +41,7 @@ export const createPost = async (req, res) => {
 
     } catch (error) {
 
-        if (error.message === "Password must contain between 6 and 10 characters") {
+        if (error.message === "You should to introuce any data to update") {
             return handleError(res, error.message, 400)
         }
 

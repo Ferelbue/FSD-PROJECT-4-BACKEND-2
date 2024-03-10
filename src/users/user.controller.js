@@ -10,10 +10,10 @@ export const getUsers = async (req, res) => {
         const pageElements = req.query.limit;
         const actualPage = req.query.page;
         const skip = (actualPage - 1) * pageElements;
-
+        //Retrieve data
         const userRole = req.tokenData.roleName;
         const userId = req.tokenData.userId;
-
+        //Filter
         const queryFilters = {}
 
         if (req.query.firstName) {
@@ -29,7 +29,7 @@ export const getUsers = async (req, res) => {
         //Retrieve public users
         if (userRole !== "super-admin") {
             const userPublic = await User
-                .find({public: true })
+                .find({ public: true })
                 .select('-_id -password -createdAt -updatedAt')
                 .skip(skip)
                 .limit(pageElements);
@@ -47,12 +47,11 @@ export const getUsers = async (req, res) => {
             .skip(skip)
             .limit(pageElements);
 
-
         if (!users) {
             throw new Error("Any user found to retireve")
         }
 
-       return res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "all users retrieved",
             data: users
@@ -70,10 +69,8 @@ export const getUsers = async (req, res) => {
 export const getUserProfile = async (req, res) => {
 
     try {
-        const name = req.body.name
-        console.log(name)
         const userId = req.tokenData.userId
-        console.log(userId)
+
         const user = await User
             .findById(userId)
             .select('-_id -password -createdAt -updatedAt')
@@ -105,14 +102,10 @@ export const updateUserProfile = async (req, res) => {
         const lastName = req.body.lastName
         const email = req.body.email
 
-        if (!userId || !firstName || !lastName || !email) {
-            throw new Error("You should to introuce any data to update")
-        }
+        if (!firstName && !lastName && !email) {
+            console.log(email)
 
-        const queryFilters = {
-            firstName: undefined,
-            lastName: undefined,
-            email: undefined
+            throw new Error("You should to introuce any data to update")
         }
 
         const userUpdated = await User.findOneAndUpdate(
@@ -129,8 +122,6 @@ export const updateUserProfile = async (req, res) => {
             },
         )
             .select('-_id -password -createdAt -updatedAt')
-
-
 
         res.status(200).json({
             success: true,
@@ -150,54 +141,57 @@ export const updateUserProfile = async (req, res) => {
 export const deleteUserById = async (req, res) => {
 
     try {
-        const userId = req.params.id
+        const userToRemove = req.params.id
+        const userLoged = req.tokenData.userId
+        const roleLoged = req.tokenData.roleName
 
-        const userUpdated = await User.findOneAndDelete(
+        if ((userLoged !== userToRemove) && (roleLoged !== "super-admin")) {
+            throw new Error("You dont have permitions to modidy this role")
+        }
+
+        const userDeleted = await User.findOneAndDelete(
             {
-                _id: userId
+                _id: userToRemove
             }
         )
             .select('-_id -password -createdAt -updatedAt')
 
-        if (!userUpdated) {
+        if (!userDeleted) {
             throw new Error("Any user found to update")
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "User deleted",
-            data: userUpdated
+            data: userDeleted
         })
 
     } catch (error) {
         if (error.message === "Any user found to update") {
             return handleError(res, error.message, 400)
         }
+        if (error.message === "You dont have permitions to modidy this role") {
+            return handleError(res, error.message, 400)
+        }
 
-        handleError(res, "Cant update any propery", 500)
+        handleError(res, "Cant delete this user", 500)
     }
 }
 
 export const updateUserRole = async (req, res) => {
 
     try {
-        console.log(1)
-        const userId = req.params.id
+
         const role = req.body.role
+        const userToModify = req.params.id
 
         if (!role) {
             throw new Error("You should to introuce any data to update")
         }
 
-        const queryFilters = {
-            firstName: undefined,
-            lastName: undefined,
-            email: undefined
-        }
-
         const userUpdated = await User.findOneAndUpdate(
             {
-                _id: userId
+                _id: userToModify
             },
             {
                 role
@@ -208,16 +202,24 @@ export const updateUserRole = async (req, res) => {
         )
             .select('-_id -password -createdAt -updatedAt')
 
+        if (!userUpdated) {
+            throw new Error("Any user found to update")
+        }
 
-
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
-            message: "User retrieved",
+            message: "User updated",
             data: userUpdated
         })
 
     } catch (error) {
         if (error.message === "You should to introuce any data to update") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "You dont have permitions to modidy this role") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "Any user found to update") {
             return handleError(res, error.message, 400)
         }
 
