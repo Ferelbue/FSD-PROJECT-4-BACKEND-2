@@ -1,19 +1,18 @@
-import { NextFunction, Request, Response } from "express";
 
-export const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
+export const isAdmin = async (req, res, next) => {
 
     try {
-        if(req.tokenData.roleName !== 'admin' && req.tokenData.roleName !== 'super-admin'){
-        return res.status(401).json(
-            {
-                success: false,
-                message: "UNAUTHORIZED",
-            }
-        )
+        if (req.tokenData.roleName !== 'admin' && req.tokenData.roleName !== 'super-admin') {
+            return res.status(401).json(
+                {
+                    success: false,
+                    message: "UNAUTHORIZED",
+                }
+            )
         }
 
-     next();
-     
+        next();
+
     } catch (error) {
         return res.status(500).json(
             {

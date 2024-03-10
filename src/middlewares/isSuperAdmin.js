@@ -3,17 +3,17 @@
 export const isSuperAdmin = async (req, res, next) => {
 
     try {
-        if(req.tokenData.roleName !== 'super_admin'){
-        return res.status(401).json(
-            {
-                success: false,
-                message: "UNAUTHORIZED",
-            }
-        )
+        if (req.tokenData.roleName !== 'super_admin') {
+            return res.status(401).json(
+                {
+                    success: false,
+                    message: "UNAUTHORIZED",
+                }
+            )
         }
 
-     next();
-     
+        next();
+
     } catch (error) {
         return res.status(500).json(
             {

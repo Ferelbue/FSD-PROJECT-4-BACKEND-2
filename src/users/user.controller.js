@@ -6,10 +6,15 @@ import Post from "../posts/Posts.js";
 export const getUsers = async (req, res) => {
 
     try {
+        //Pagination
+        const pageElements = req.query.limit;
+        const actualPage = req.query.page;
+        const skip = (actualPage - 1) * pageElements;
+
+        const userRole = req.tokenData.roleName;
+        const userId = req.tokenData.userId;
 
         const queryFilters = {}
-        console.log(1)
-        // Se declara la constante queryFiters de tipo queryFilters
 
         if (req.query.firstName) {
             queryFilters.firstName = new RegExp(req.query.firstName);
@@ -21,18 +26,33 @@ export const getUsers = async (req, res) => {
             queryFilters.email = new RegExp(req.query.email);
         }
 
+        //Retrieve public users
+        if (userRole !== "super-admin") {
+            const userPublic = await User
+                .find({public: true })
+                .select('-_id -password -createdAt -updatedAt')
+                .skip(skip)
+                .limit(pageElements);
+
+            return res.status(200).json({
+                success: true,
+                message: "all publics users retrieved",
+                data: userPublic
+            })
+        }
 
         const users = await User
             .find(queryFilters)
             .select('-_id -password -createdAt -updatedAt')
+            .skip(skip)
+            .limit(pageElements);
+
 
         if (!users) {
             throw new Error("Any user found to retireve")
         }
 
-
-
-        res.status(200).json({
+       return res.status(200).json({
             success: true,
             message: "all users retrieved",
             data: users
@@ -211,14 +231,14 @@ export const getPostByUserId = async (req, res) => {
         const userId = req.params.userId
         console.log(userId)
         const posts = await Post
-        .find({userId:userId})
-        .select("-_id -userId -updatedAt")
-        
+            .find({ userId: userId })
+            .select("-_id -userId -updatedAt")
+
         if (!posts) {
             throw new Error("Any post to retrieve")
         }
 
-           res.status(200).json({
+        res.status(200).json({
             success: true,
             message: "Post retrieved succesfully",
             data: posts

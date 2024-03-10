@@ -1,7 +1,6 @@
 
 import { Router } from "express";
 import { deleteUserById, getPostByUserId, getUserProfile, getUsers, updateUserProfile, updateUserRole } from "./user.controller.js";
-
 import { isSuperAdmin } from "../middlewares/isSuperAdmin.js";
 import { auth } from "../middlewares/auth.js";
 

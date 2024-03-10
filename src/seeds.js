@@ -12,13 +12,14 @@ export const seedDatabase = async () => {
     try {
         await dbConnection();
 
+        //Generate fixed test users
         const user1 = new User({
             firstName: "user",
             lastName: "user",
             email: "user@user.com",
             password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
-
-            role: "user"
+            role: "user",
+            public: "true"
         })
         await user1.save();
 
@@ -27,7 +28,8 @@ export const seedDatabase = async () => {
             lastName: "admin",
             email: "admin@admin.com",
             password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
-            role: "admin"
+            role: "admin",
+            public: "true"
         })
         await user2.save();
 
@@ -36,7 +38,8 @@ export const seedDatabase = async () => {
             lastName: "superAdmin",
             email: "superAdmin@superAdmin.com",
             password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
-            role: "super-admin"
+            role: "super-admin",
+            public: "true"
         })
         await user3.save();
 
@@ -47,7 +50,8 @@ export const seedDatabase = async () => {
                 firstName: faker.person.firstName(),
                 lastName: faker.person.lastName(),
                 email: faker.internet.email(),
-                password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG"
+                password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
+                public: faker.datatype.boolean()
             })
             await user.save();
             const userId = user._id.toString()

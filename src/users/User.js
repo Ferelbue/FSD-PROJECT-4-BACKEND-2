@@ -1,5 +1,6 @@
 
 import { Schema, model } from "mongoose";
+import { boolean } from "webidl-conversions";
 
 export const UserSchema = new Schema(
     {
@@ -24,7 +25,12 @@ export const UserSchema = new Schema(
             type: String,
             enum: ['user', 'admin', 'super-admin'],
             default: 'user'
-        }
+        },
+        public: {
+            type: Boolean,
+            required: true,
+            default: false
+        },
     },
     {
         timestamps: true,

@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import User from "../users/User.js";
 import { handleError } from "../utils/handleError.js";
 
-
 export const register = async (req, res) => {
 
     try {
@@ -15,6 +14,11 @@ export const register = async (req, res) => {
         const lastName = req.body.lastName
         const email = req.body.email
         const password = req.body.password
+
+        //Data input validation
+        if(!firstName || !email || !password){
+            throw new Error("First name, email and password are mandatory to register")
+        }
 
         //Password validation
         if (password.length < 6 || password.length > 20) {
@@ -58,6 +62,9 @@ export const register = async (req, res) => {
 
     } catch (error) {
 
+        if (error.message === "First name, email and password are mandatory to register") {
+            return handleError(res, error.message, 400)
+        }
         if (error.message === "Password must contain between 6 and 10 characters") {
             return handleError(res, error.message, 400)
         }
@@ -70,9 +77,6 @@ export const register = async (req, res) => {
     }
 }
 
-
-
-
 export const login = async (req, res) => {
 
     try {
@@ -84,6 +88,11 @@ export const login = async (req, res) => {
         //Validation data
         if (!email || !password) {
             throw new Error("email and password are mandatories")
+        }
+
+        //Password validation
+        if (password.length < 6 || password.length > 20) {
+            throw new Error("Password must contain between 6 and 10 characters")
         }
 
         //Email validation
@@ -108,6 +117,7 @@ export const login = async (req, res) => {
         if (!isValidPassword) {
             throw new Error("Email or password invalid")
         }
+        
         //TOKEN CREATION
         const token = jwt.sign(
             {
@@ -129,6 +139,9 @@ export const login = async (req, res) => {
     } catch (error) {
 
         if (error.message === "email and password are mandatories") {
+            return handleError(res, error.message, 404)
+        }
+        if (error.message === "Password must contain between 6 and 10 characters") {
             return handleError(res, error.message, 404)
         }
 

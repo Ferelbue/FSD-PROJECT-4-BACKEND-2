@@ -160,15 +160,18 @@ export const updatePostById = async (req, res) => {
 export const getUserPosts = async (req, res) => {
 
     try {
-
+        //Pagination
+        const pageElements = req.query.limit;
+        const actualPage = req.query.page;
+        const skip = (actualPage - 1) * pageElements;
         const userId = req.tokenData.userId
 
         const userPosts = await Post
             .find({userId:userId})
             .select('-_id -password -createdAt -updatedAt')
-
-        console.log(userPosts)
-
+            .skip(skip)
+            .limit(pageElements);
+            
         if (!userPosts) {
             throw new Error("Any user found to retireve")
         }
@@ -191,12 +194,18 @@ export const getUserPosts = async (req, res) => {
 export const getPosts = async (req, res) => {
 
     try {
+        //Pagination
+        const pageElements = req.query.limit;
+        const actualPage = req.query.page;
+        const skip = (actualPage - 1) * pageElements;
 
         const userId = req.tokenData.userId
 
         const posts = await Post
             .find()
             .select('-_id -password -createdAt -updatedAt')
+            .skip(skip)
+            .limit(pageElements);
 
         if (!posts) {
             throw new Error("Any post found to retireve")
