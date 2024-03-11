@@ -39,7 +39,7 @@ export const seedDatabase = async () => {
             _id: new mongoose.Types.ObjectId("65ef77678ba420fc69027ce6"),
             firstName: "superAdmin",
             lastName: "superAdmin",
-            email: "superAdmin@superAdmin.com",
+            email: "super@super.com",
             password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
             role: "super-admin",
             public: "true"

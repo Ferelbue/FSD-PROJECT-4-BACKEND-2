@@ -232,11 +232,11 @@ export const getPosts = async (req, res) => {
                     .find({ _id: posts[i].userId, public: true })
                     .select('-_id -password -createdAt -updatedAt')
 
-                if (userPublicPosts.length >  0) {
+                if (userPublicPosts.length > 0) {
                     publicPosts.push(posts[i])
                 }
             }
-    
+
             return res.status(200).json({
                 success: true,
                 message: "User retrieved",
@@ -252,7 +252,6 @@ export const getPosts = async (req, res) => {
         handleError(res, "Cant retrieve any book", 500)
     }
 }
-
 
 export const getPostById = async (req, res) => {
 
@@ -288,32 +287,31 @@ export const getPostById = async (req, res) => {
     }
 }
 
-
 export const postLike = async (req, res) => {
 
     try {
 
         const postId = req.params.id
-
-        let like;
+        const userId = req.tokenData.userId
 
         const post = await Post.findById(postId)
 
-        post.like === true ? like = false : like = true
-        // const post = await Post.findById(postId)
+        if (post.like.includes(userId)) {
 
-        const postUpdated = await Post.findOneAndUpdate(
+            post.like.splice(post.like.indexOf(userId), 1)
+            await post.save()
+
+        } else {
+
+            post.like.push(userId)
+            await post.save();
+        }
+
+        const postUpdated = await Post.find(
             {
                 _id: postId
-            },
-            {
-                like,
-            },
-            {
-                new: true
-            },
-        )
-            .select('-_id -userId -createdAt ')
+            }
+        ).select('-_id -userId -createdAt ')
 
         res.status(200).json({
             success: true,

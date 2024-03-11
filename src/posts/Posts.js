@@ -16,11 +16,19 @@ export const PostSchema = new Schema(
             type: String,
             required: true,
         },
-        like: {
-            type: Boolean,
-            require: false,
-            default: false,
-        }
+        like: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ],
+        comment: [
+            {
+                text: { type: String },
+                userId: { type: Schema.Types.ObjectId, ref: 'User' },
+                likes: { type: Schema.Types.ObjectId, ref: 'User' }
+            }
+        ],
     },
     {
         timestamps: true,
