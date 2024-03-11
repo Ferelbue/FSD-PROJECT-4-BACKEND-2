@@ -1,6 +1,6 @@
 
-import User from "./users/User.js";
-import Post from "./posts/Posts.js";
+import User from "../users/User.js";
+import Post from "../posts/Posts.js";
 import { faker } from '@faker-js/faker';
 import "dotenv/config";
 import { dbConnection } from "./db.js";
@@ -14,6 +14,7 @@ export const seedDatabase = async () => {
 
         //Generate fixed test users
         const user1 = new User({
+            _id: new mongoose.Types.ObjectId("65ef77678ba420fc69027ce0"),
             firstName: "user",
             lastName: "user",
             email: "user@user.com",
@@ -24,6 +25,7 @@ export const seedDatabase = async () => {
         await user1.save();
 
         const user2 = new User({
+            _id: new mongoose.Types.ObjectId("65ef77678ba420fc69027ce4"),
             firstName: "admin",
             lastName: "admin",
             email: "admin@admin.com",
@@ -34,6 +36,7 @@ export const seedDatabase = async () => {
         await user2.save();
 
         const user3 = new User({
+            _id: new mongoose.Types.ObjectId("65ef77678ba420fc69027ce6"),
             firstName: "superAdmin",
             lastName: "superAdmin",
             email: "superAdmin@superAdmin.com",
@@ -57,6 +60,9 @@ export const seedDatabase = async () => {
             const userId = user._id.toString()
             usersId.push(userId)
         }
+        usersId.push(user1._id.toString())
+        usersId.push(user2._id.toString())
+        usersId.push(user3._id.toString())
 
         console.log("---------------------------------------")
         console.log("++++++++ USUARIOS CREADOS (10) ++++++++")
