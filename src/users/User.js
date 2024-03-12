@@ -42,6 +42,18 @@ export const UserSchema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'User'
             }
+        ],
+        likes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Post'
+            }
+        ],
+        commentarys: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Post'
+            }
         ]
     },
     {

@@ -25,10 +25,10 @@ export const PostSchema = new Schema(
         comments: [
             {
                 commentatorId: {
-                    type: String,
+                    type: String
                 },
                 commentary: {
-                    type: String,
+                    type: String
                 }
             }
         ],

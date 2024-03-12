@@ -295,17 +295,24 @@ export const postLike = async (req, res) => {
         const userId = req.tokenData.userId
 
         const post = await Post.findById(postId)
+        const user = await User.findById(userId)
 
         if (post.like.includes(userId)) {
 
             post.like.splice(post.like.indexOf(userId), 1)
             await post.save()
 
+            user.likes.splice(user.likes.indexOf(postId), 1)
+            await user.save()
+
         } else {
 
             post.like.push(userId)
             await post.save();
-        }
+
+            user.likes.push(postId)
+            await user.save();
+        } 
 
         const postUpdated = await Post.find(
             {
@@ -342,13 +349,18 @@ export const postComment = async (req, res) => {
         const commentatorId = req.tokenData.userId
         const commentary = req.body.commentary
 
-        console.log(commentatorId)
-        console.log(commentary)
-
         const post = await Post.findById(postId)
+        const user = await User.findById(commentatorId)
 
-        post.comments.push({commentatorId:commentatorId, commentary:commentary})
+        post.comments.push({commentatorId:user.email, commentary:commentary})
         await post.save();
+
+        const post2 = await Post.findById(postId)
+
+        const positionLastComment = post2.comments.length-1
+
+        user.commentarys.push(post2.comments[positionLastComment]._id)
+        await user.save();
 
         const postUpdated = await Post.find(
             {
