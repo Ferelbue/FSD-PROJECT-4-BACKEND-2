@@ -22,11 +22,14 @@ export const PostSchema = new Schema(
                 ref: 'User'
             }
         ],
-        comment: [
+        comments: [
             {
-                text: { type: String },
-                userId: { type: Schema.Types.ObjectId, ref: 'User' },
-                likes: { type: Schema.Types.ObjectId, ref: 'User' }
+                commentatorId: {
+                    type: String,
+                },
+                commentary: {
+                    type: String,
+                }
             }
         ],
     },

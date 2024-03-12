@@ -72,9 +72,13 @@ export const seedDatabase = async () => {
         for (let i = 0; i < 50; i++) {
 
             const user = new Post({
-                title: faker.word.words(5),
-                description: faker.word.words(50),
-                userId: usersId[Math.floor(Math.random() * usersId.length)]
+                title: faker.lorem.sentence(),
+                description: faker.lorem.text(),
+                userId: usersId[Math.floor(Math.random() * usersId.length)],
+                comments:{
+                    commentatorId:usersId[Math.floor(Math.random() * usersId.length)],
+                    commentary:faker.lorem.paragraph()
+                } 
             })
             await user.save();
         }

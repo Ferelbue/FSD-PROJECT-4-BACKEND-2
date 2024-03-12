@@ -311,7 +311,7 @@ export const postLike = async (req, res) => {
             {
                 _id: postId
             }
-        ).select('-_id -userId -createdAt ')
+        ).select('-_id -userId -createdAt -comments')
 
         res.status(200).json({
             success: true,
@@ -326,6 +326,44 @@ export const postLike = async (req, res) => {
         if (error.message === "Cant modificate another person post") {
             return handleError(res, error.message, 400)
         }
+        if (error.message === "Any post to update") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant update any post", 500)
+    }
+}
+
+export const postComment = async (req, res) => {
+
+    try {
+
+        const postId = req.params.id
+        const commentatorId = req.tokenData.userId
+        const commentary = req.body.commentary
+
+        console.log(commentatorId)
+        console.log(commentary)
+
+        const post = await Post.findById(postId)
+
+        post.comments.push({commentatorId:commentatorId, commentary:commentary})
+        await post.save();
+
+        const postUpdated = await Post.find(
+            {
+                _id: postId,
+            }
+        ).select('-_id -userId -createdAt')
+
+        res.status(200).json({
+            success: true,
+            message: "Comment updated",
+            data: postUpdated
+        })
+
+    } catch (error) {
+
         if (error.message === "Any post to update") {
             return handleError(res, error.message, 400)
         }
