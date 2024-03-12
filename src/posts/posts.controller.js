@@ -193,7 +193,7 @@ export const getUserPosts = async (req, res) => {
             return handleError(res, error.message, 400)
         }
 
-        handleError(res, "Cant retrieve any book", 500)
+        handleError(res, "Cant retrieve any user", 500)
     }
 }
 
@@ -283,7 +283,7 @@ export const getPostById = async (req, res) => {
             return handleError(res, error.message, 400)
         }
 
-        handleError(res, "Cant rerieve any post", 500)
+        handleError(res, "Cant retrieve any post", 500)
     }
 }
 
@@ -381,5 +381,38 @@ export const postComment = async (req, res) => {
         }
 
         handleError(res, "Cant update any post", 500)
+    }
+}
+
+export const getFollowersPosts = async (req, res) => {
+
+    try {
+        //Pagination
+        const userId = req.tokenData.userId
+        let posts = []
+        const user = await User.findById(userId)
+
+        for(let i=0; i<user.follower.length;i++){
+            const post = await Post.find(
+                {
+                    userId: user.follower[i]
+                }
+            ).select('-_id -comments -updatedAt')
+            posts.push(post)
+        }
+
+            return res.status(200).json({
+                success: true,
+                message: "User retrieved",
+                data: posts
+            })
+        
+
+    } catch (error) {
+        if (error.message === "Any post found to retireve") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant retrieve any book", 500)
     }
 }
