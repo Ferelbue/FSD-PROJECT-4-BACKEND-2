@@ -292,23 +292,22 @@ export const followUserById = async (req, res) => {
                     if (userFollowerUpdated.following[j].toString() === userToFollow) {
                         userFollowerUpdated.following.splice(j, 1)
                         await userFollowerUpdated.save()
-                        console.log('asdsadsadada')
 
                         const printUserFollowerUpdated = await User.find(
                             {
                                 _id: userFollower
                             }
-                        ).select('-_id -password -role -public -createdAt -updatedAt')
+                        ).select('-_id -password -role -public -following -follower -likes -commentarys -createdAt -updatedAt')
                 
                         const printUserToFollowUpdated = await User.find(
                             {
                                 _id: userToFollow
                             }
-                        ).select('-_id -password -role -public -createdAt -updatedAt')
+                        ).select('-_id -password -role -public -following -follower -likes -commentarys -createdAt -updatedAt')
 
                         return res.status(200).json({
                             success: true,
-                            message: "Users updated",
+                            message: "User succesfully unfollow",
                             data: printUserToFollowUpdated, printUserFollowerUpdated
                         })
 
@@ -332,18 +331,18 @@ export const followUserById = async (req, res) => {
             {
                 _id: userFollower
             }
-        ).select('-_id -password -role -public -createdAt -updatedAt')
+        ).select('-_id -password -role -public -following -follower -likes -commentarys -createdAt -updatedAt')
 
         const printUserToFollowUpdated = await User.find(
             {
                 _id: userToFollow
             }
-        ).select('-_id -password -role -public -createdAt -updatedAt')
+        ).select('-_id -password -role -public -following -follower -likes -commentarys -createdAt -updatedAt')
 
 
         return res.status(200).json({
             success: true,
-            message: "Users updated",
+            message: "User succesfully follow",
             data: printUserToFollowUpdated, printUserFollowerUpdated
         })
 
