@@ -47,6 +47,7 @@ export const register = async (req, res) => {
 
         //Data response
         const printUser = {
+            userId:newUser._id,
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             email: newUser.email,
@@ -66,7 +67,7 @@ export const register = async (req, res) => {
             return handleError(res, error.message, 400)
         }
         if (error.message === "Password must contain between 6 and 10 characters") {
-            return handleError(res, error.message, 400)
+            return handleError(res, error.message, 401)
         }
 
         if (error.message === "format email invalid") {
@@ -108,16 +109,16 @@ export const login = async (req, res) => {
             }
         )
 
-        if (!user) {
-            throw new Error("Email or password invalid")
-        }
-
         const isValidPassword = bcrypt.compareSync(password, user.password)
 
         if (!isValidPassword) {
             throw new Error("Email or password invalid")
         }
-        
+
+        if (!user) {
+            throw new Error("Email or password invalid")
+        }
+
         //TOKEN CREATION
         const token = jwt.sign(
             {
@@ -130,7 +131,7 @@ export const login = async (req, res) => {
             }
         )
 
-        res.status(200).json({
+        res.status(202).json({
             success: true,
             message: "User logged succesfully",
             token: token
@@ -146,13 +147,13 @@ export const login = async (req, res) => {
         }
 
         if (error.message === "Email format is not valid") {
-            return handleError(res, error.message, 404)
+            return handleError(res, error.message, 400)
         }
         
         if (error.message === "Email or password invalid") {
             return handleError(res, error.message, 400)
         }
         
-        handleError(res, "Cant create book", 500)
+        handleError(res, "User cant login", 500)
     }
 }

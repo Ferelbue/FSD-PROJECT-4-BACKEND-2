@@ -90,7 +90,7 @@ export const getUserProfile = async (req, res) => {
             return handleError(res, error.message, 400)
         }
 
-        handleError(res, "Cant retrieve any book", 500)
+        handleError(res, "Cant retrieve any user", 500)
     }
 }
 
@@ -107,7 +107,10 @@ export const updateUserProfile = async (req, res) => {
 
             throw new Error("You should to introuce any data to update")
         }
-
+        const validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+        if (!validEmail.test(email)) {
+            throw new Error("Email format is not valid")
+        }
         const userUpdated = await User.findOneAndUpdate(
             {
                 _id: userId
@@ -131,6 +134,9 @@ export const updateUserProfile = async (req, res) => {
 
     } catch (error) {
         if (error.message === "You should to introuce any data to update") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "Email format is not valid") {
             return handleError(res, error.message, 400)
         }
 
@@ -188,6 +194,9 @@ export const updateUserRole = async (req, res) => {
         if (!role) {
             throw new Error("You should to introuce any data to update")
         }
+        if (role !== "user" && role !== "admin" && role !== "superAdmin") {
+            throw new Error("The role provided its wrong")
+        }
 
         const userUpdated = await User.findOneAndUpdate(
             {
@@ -220,6 +229,9 @@ export const updateUserRole = async (req, res) => {
             return handleError(res, error.message, 400)
         }
         if (error.message === "Any user found to update") {
+            return handleError(res, error.message, 400)
+        }
+        if (error.message === "The role provided its wrong") {
             return handleError(res, error.message, 400)
         }
 
