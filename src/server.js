@@ -12,14 +12,19 @@ const PORT = process.env.PORT || 4001;
 
 dbConnection()
     .then(() => {
-        console.log("Database connected");
+        console.log('------------------------');
+        console.log('-- DATABASE CONNECTED --');
 
         app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
+
+            console.log('------------------------');
+            console.log('---- SERVER RUNNING ----');
+            console.log(`----    PORT:${PORT}   ----`);
+            console.log('------------------------');
         })
     })
-    .catch((error) => {
-        console.log(error);
+    .catch(error => {
+        console.log(error)
     })
 
 

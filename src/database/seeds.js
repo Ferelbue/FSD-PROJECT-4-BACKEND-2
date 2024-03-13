@@ -7,6 +7,7 @@ import { dbConnection } from "./db.js";
 import mongoose from "mongoose";
 
 let usersId = []
+let postsId = []
 
 export const seedDatabase = async () => {
     try {
@@ -71,21 +72,39 @@ export const seedDatabase = async () => {
         //Generate ramdom posts
         for (let i = 0; i < 50; i++) {
 
-            const user = new Post({
+            const post = new Post({
                 title: faker.lorem.sentence(),
                 description: faker.lorem.text(),
                 userId: usersId[Math.floor(Math.random() * usersId.length)],
-                comments:{
-                    commentatorId:usersId[Math.floor(Math.random() * usersId.length)],
-                    commentary:faker.lorem.paragraph()
-                } 
+                comments: {
+                    commentatorId: usersId[Math.floor(Math.random() * usersId.length)],
+                    commentary: faker.lorem.paragraph()
+                },
+                like: [usersId[Math.floor(Math.random() * usersId.length)], usersId[Math.floor(Math.random() * usersId.length)], usersId[Math.floor(Math.random() * usersId.length)]]
             })
-            await user.save();
+            await post.save();
+            const post2 = post._id.toString()
+            postsId.push(post2)
         }
 
         console.log("---------------------------------------")
         console.log("++++++++++ POSTS CREADOS (50) +++++++++")
         console.log("---------------------------------------")
+
+        for (let i = 0; i < usersId.length; i++) {
+            const update = await User.findOneAndUpdate(
+                {
+                    _id: usersId[i],
+                },
+                {
+                    following: usersId[Math.floor(Math.random() * usersId.length)],
+                    follower: usersId[Math.floor(Math.random() * usersId.length)],
+                    likes: postsId[Math.floor(Math.random() * usersId.length)],
+                    commentarys: postsId[Math.floor(Math.random() * usersId.length)]
+                }
+            )
+            await update.save();
+        }
 
     } catch (error) {
         console.log(error);
@@ -94,5 +113,10 @@ export const seedDatabase = async () => {
         mongoose.connection.close();
     }
 }
+
+
+
+
+
 
 seedDatabase()

@@ -243,7 +243,7 @@ export const getPostByUserId = async (req, res) => {
 
     try {
         const userId = req.params.userId
-        console.log(userId)
+
         const posts = await Post
             .find({ userId: userId })
             .select("-_id -userId -updatedAt")
