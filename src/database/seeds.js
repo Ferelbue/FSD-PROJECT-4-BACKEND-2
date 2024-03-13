@@ -87,10 +87,6 @@ export const seedDatabase = async () => {
             postsId.push(post2)
         }
 
-        console.log("---------------------------------------")
-        console.log("++++++++++ POSTS CREADOS (50) +++++++++")
-        console.log("---------------------------------------")
-
         for (let i = 0; i < usersId.length; i++) {
             const update = await User.findOneAndUpdate(
                 {
@@ -105,6 +101,10 @@ export const seedDatabase = async () => {
             )
             await update.save();
         }
+
+        console.log("---------------------------------------")
+        console.log("++++++++++ POSTS CREADOS (50) +++++++++")
+        console.log("---------------------------------------")
 
     } catch (error) {
         console.log(error);
