@@ -39,13 +39,14 @@ The projetc consists in develop the backend of an social media aplication.
 
 ## Features :star2:
 
-- **Endpoints test:** Thunder collection file.👌
+- **Endpoints test:** Thunder collection files.👌
 - **User Authentication:** Secure signup and login processes. 🔒
 - **Post Creation:** Users can create posts, with date and user profile validation. 📄
 - **Admin and SuperAdmin CRUD Endpoints:** Full control over users, posts and services for administrators. 👩‍💼👨‍💼
 - **Acurate Documentation:** Fully documented API endpoints. 📚
 - **Docker Container:** Easy setup and deployment with Docker. 🐳
 - **MongoDB Database with MongoCompass:** Robust database management. 🗄️
+- **Live deployment with fl0 and MongoAtlas:** Posibility to deploy the API with remote server and data base. 🗄️
 - **Mock Data Generation:** Realistic data generation with Faker.js. 🤖
 - **JWT Authentication:** Secure API endpoints with JSON Web Tokens. 🔑
 - **Error Handling:** Custom error middleware for handling common API errors. 📝
@@ -89,7 +90,7 @@ The projetc consists in develop the backend of an social media aplication.
     ```
 
 - #### Thunder Client :zap:
-  - [Open this file in Thunder client extension and test de API ](./HTTP/thunder-collection_PROJETC_5_LOCAL.json)
+  - [Open this file in Thunder client extension and test de API ](./HTTP/thunder-collection_PROJECT_5_LOCAL.json)
 
 ---
 
@@ -129,16 +130,16 @@ The projetc consists in develop the backend of an social media aplication.
     ```
 
 - #### Thunder Client :zap:
-  - [Open this file in Thunder client extension and test de API ](./HTTP/thunder-collection_PROJETC_5_ONLINE.json)
+  - [Open this file in Thunder client extension and test de API ](./HTTP/thunder-collection_PROJECT_5_ONLINE.json)
 
 ---
 
 ## API Documentation :bookmark_tabs:
 
 - ### Database Design :newspaper:
-
+<div align="center">
 <img width="803" alt="ERD" src="./img/DB_design.png">
-
+</div>
 ---
 
 - ### Endpoints :electric_plug:

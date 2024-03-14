@@ -1,0 +1,398 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "PROJECT_5_SOCIAL_MEDIA_ONLINE",
+    "dateExported": "2024-03-14T18:39:29.955Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "92840dae-d5c3-4add-a69b-78a3c996ab08",
+            "name": "AUTH",
+            "containerId": "",
+            "created": "2024-03-12T16:42:40.470Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "f39b6eda-0508-4749-a5ea-48ffedf67272",
+            "name": "USERS",
+            "containerId": "",
+            "created": "2024-03-12T16:42:40.472Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "51b6099b-2cfd-448b-96a4-8b997e325e37",
+            "name": "POSTS",
+            "containerId": "",
+            "created": "2024-03-12T16:42:40.473Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "4f580fc9-6e00-49a9-ba82-a70b376904d5",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "92840dae-d5c3-4add-a69b-78a3c996ab08",
+            "name": "USER REGISTER",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/auth/register",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-12T16:42:40.471Z",
+            "modified": "2024-03-14T18:36:28.210Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"firstName\": \"ruben\",\n  \"email\": \"rubfsjgfffgen@rugfbgfeffn.com\",\n  \"password\": \"123456\",\n  \"role\": \"superAdmin\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "dbac4681-d09d-43de-83f5-d92eb1e3ec0a",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "92840dae-d5c3-4add-a69b-78a3c996ab08",
+            "name": "USER LOGIN",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/auth/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-03-12T16:42:40.472Z",
+            "modified": "2024-03-14T18:36:55.549Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"super@super.com\",\n  \"password\":\"123456\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "421d56bb-0c07-4ff4-af5a-540d7e7be618",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "f39b6eda-0508-4749-a5ea-48ffedf67272",
+            "name": "GER ALL USERS",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/users",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-03-12T16:42:40.473Z",
+            "modified": "2024-03-14T18:37:08.642Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjZTkyZWRjOWEzYTM1OWUzYzRlMGMiLCJyb2xlTmFtZSI6InN1cGVyLWFkbWluIiwiaWF0IjoxNzEwMDY2MTMwLCJleHAiOjE3MTAwNzMzMzB9.lLeOArdjPsS1Ciox65MizBHR8uyzaRhfU7wosftHNdA"
+            },
+            "tests": []
+        },
+        {
+            "_id": "c6a41a2e-8029-4f2f-b500-0994cc5b5593",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "f39b6eda-0508-4749-a5ea-48ffedf67272",
+            "name": "GET USER PROFILE",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/users/profile",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-03-12T16:42:40.474Z",
+            "modified": "2024-03-14T18:37:14.253Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVmNzc2NzhiYTQyMGZjNjkwMjdjZTYiLCJyb2xlTmFtZSI6InN1cGVyLWFkbWluIiwiaWF0IjoxNzEwMjg1OTk4LCJleHAiOjE3MTAyOTMxOTh9.-GT64PPc35HhzPG40EWKEHoWMZ2HS6wRjTvEFBL5VJM"
+            },
+            "tests": []
+        },
+        {
+            "_id": "d97982eb-18f4-48d5-9814-aff063d8feb4",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "f39b6eda-0508-4749-a5ea-48ffedf67272",
+            "name": "UPDATE PROFILE",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/users/profile",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2024-03-12T16:42:40.475Z",
+            "modified": "2024-03-14T18:37:21.910Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"pd@p.com\"\n}",
+                "form": []
+            },
+            "reqType": "put",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjZTkyZWRjOWEzYTM1OWUzYzRlMTgiLCJyb2xlTmFtZSI6InVzZXIiLCJpYXQiOjE3MTAwNjk5NzcsImV4cCI6MTcxMDA3NzE3N30.d6VVx-5v3dDcwSzokA7JbGf5OtEr39WFJzaaTeEg-7I"
+            },
+            "tests": []
+        },
+        {
+            "_id": "41bdc3ce-fae8-48de-b160-86179e54eb7b",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "f39b6eda-0508-4749-a5ea-48ffedf67272",
+            "name": "FILTER USERS",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/users?email=e&firstName=fer",
+            "method": "GET",
+            "sortNum": 55000,
+            "created": "2024-03-12T16:42:40.476Z",
+            "modified": "2024-03-14T18:37:27.321Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "email",
+                    "value": "e",
+                    "isPath": false
+                },
+                {
+                    "name": "firstName",
+                    "value": "fer",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWViOGVkYzIzYjMzMDI1ZDMzNTVkNDEiLCJyb2xlTmFtZSI6InVzZXIiLCJpYXQiOjE3MDk5ODEwNjYsImV4cCI6MTcwOTk4ODI2Nn0.C8brB9j_ghWLeyms11mpUePXWK2eojmLfBZo7-HXMN4"
+            },
+            "tests": []
+        },
+        {
+            "_id": "63fb49bf-5eff-4342-ab4f-f97e869ea69a",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "f39b6eda-0508-4749-a5ea-48ffedf67272",
+            "name": "DELETE USER BY ID",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/users/65ece92edc9a3a359e3c4e16",
+            "method": "DELETE",
+            "sortNum": 60000,
+            "created": "2024-03-12T16:42:40.477Z",
+            "modified": "2024-03-14T18:37:34.593Z",
+            "headers": [],
+            "params": [],
+            "reqType": "del",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjZTkyZWRjOWEzYTM1OWUzYzRlMGEiLCJyb2xlTmFtZSI6InN1cGVyLWFkbWluIiwiaWF0IjoxNzEwMDY4Mjc3LCJleHAiOjE3MTAwNzU0Nzd9.4y2MPkRfqmnFQW-Nk4kKQ6Yvtb8TuZ6ZDwWhDzTh8dY"
+            },
+            "tests": []
+        },
+        {
+            "_id": "915cf350-df37-4c6e-86d7-b74c2ce85d01",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "f39b6eda-0508-4749-a5ea-48ffedf67272",
+            "name": "UPDATE USER ROLE",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/users/65ece92edc9a3a359e3c4e18/role",
+            "method": "PUT",
+            "sortNum": 70000,
+            "created": "2024-03-12T16:42:40.478Z",
+            "modified": "2024-03-14T18:37:42.645Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"role\":\"admin\"\n}",
+                "form": []
+            },
+            "reqType": "put",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjZTkyZWRjOWEzYTM1OWUzYzRlMGEiLCJyb2xlTmFtZSI6InN1cGVyLWFkbWluIiwiaWF0IjoxNzEwMDczNzk4LCJleHAiOjE3MTAwODA5OTh9.gVJwmvDZZT161m6diTzyVv0t2avYxfvBiZyIhGuzwIE"
+            },
+            "tests": []
+        },
+        {
+            "_id": "b59c3cf1-57df-4730-8d76-73faeb322bec",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "51b6099b-2cfd-448b-96a4-8b997e325e37",
+            "name": "CREATE POST",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/posts",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2024-03-12T16:42:40.479Z",
+            "modified": "2024-03-14T18:38:19.599Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\":\"prhjujfjhfjjjjjjh9\",\n  \"description\":\"prueba 1 texto\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjNTA3OWY1MzMxNjQxZGI5OTJmNzAiLCJyb2xlTmFtZSI6InVzZXIiLCJpYXQiOjE3MTAwMDE4NDMsImV4cCI6MTcxMDAwOTA0M30.PWomAb02yOdJofPTSoCIAEENUqqdgOnpoXAx99EggZ4"
+            },
+            "tests": []
+        },
+        {
+            "_id": "7067235f-ea9f-4be7-a0ea-17700e3ba400",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "51b6099b-2cfd-448b-96a4-8b997e325e37",
+            "name": "DELETE POST BY ID",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/posts/65ece92edc9a3a359e3c4e32",
+            "method": "DELETE",
+            "sortNum": 90000,
+            "created": "2024-03-12T16:42:40.480Z",
+            "modified": "2024-03-14T18:38:26.017Z",
+            "headers": [],
+            "params": [],
+            "reqType": "del",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjZTkyZWRjOWEzYTM1OWUzYzRlMGEiLCJyb2xlTmFtZSI6InN1cGVyLWFkbWluIiwiaWF0IjoxNzEwMDc1MTc4LCJleHAiOjE3MTAwODIzNzh9.dHLt5Pl9DbOMYNbH4mceM1wcYfZjd60dxLGZo5Zw_Xc"
+            },
+            "tests": []
+        },
+        {
+            "_id": "aceff669-376e-4248-aa65-f959b2cf74a0",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "51b6099b-2cfd-448b-96a4-8b997e325e37",
+            "name": "UPDATE POST BY ID",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/posts/65ec6343171fdd9109ccdbb5",
+            "method": "PUT",
+            "sortNum": 100000,
+            "created": "2024-03-12T16:42:40.481Z",
+            "modified": "2024-03-14T18:38:31.932Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\":\"paco\",\n  \"description\":\"pepe\"\n}",
+                "form": []
+            },
+            "reqType": "put",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjNTA3OWY1MzMxNjQxZGI5OTJmNzAiLCJyb2xlTmFtZSI6InVzZXIiLCJpYXQiOjE3MDk5OTA3OTIsImV4cCI6MTcwOTk5Nzk5Mn0.qkgNkd4VR0fhKFpGjGTVAuBW3K-Dje3wLveHiawi-8k"
+            },
+            "tests": []
+        },
+        {
+            "_id": "51ea22a6-26c6-4343-b35d-b794e4362965",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "51b6099b-2cfd-448b-96a4-8b997e325e37",
+            "name": "GET USER POST",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/posts/own?limit=5&page=1",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2024-03-12T16:42:40.482Z",
+            "modified": "2024-03-14T18:38:45.476Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "limit",
+                    "value": "5",
+                    "isPath": false
+                },
+                {
+                    "name": "page",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjZTkyZWRjOWEzYTM1OWUzYzRlMTIiLCJyb2xlTmFtZSI6InVzZXIiLCJpYXQiOjE3MTAwMjczODIsImV4cCI6MTcxMDAzNDU4Mn0.WdGmb4gcz2Zw6CjClZTGdHcadm_Mk_wGxfzeZBKFYsc"
+            },
+            "tests": []
+        },
+        {
+            "_id": "6d089ca9-5a59-4a9e-8211-2190b32c2056",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "51b6099b-2cfd-448b-96a4-8b997e325e37",
+            "name": "GET POSTS",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/posts",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2024-03-12T16:42:40.483Z",
+            "modified": "2024-03-14T18:38:51.078Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjZTkyZGRjOWEzYTM1OWUzYzRlMDYiLCJyb2xlTmFtZSI6InVzZXIiLCJpYXQiOjE3MTAwOTA4MDIsImV4cCI6MTcxMDA5ODAwMn0.-7b5Sq82fDGyZofI_82DMJ7RmPU4Va0-PKr2Bt1kXFA"
+            },
+            "tests": []
+        },
+        {
+            "_id": "06aee6d0-9654-44a7-a8dd-7ceb10f3ee47",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "51b6099b-2cfd-448b-96a4-8b997e325e37",
+            "name": "GET POST BY ID",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/posts/65ec6343171fdd9109ccbb55",
+            "method": "GET",
+            "sortNum": 130000,
+            "created": "2024-03-12T16:42:40.484Z",
+            "modified": "2024-03-14T18:38:57.565Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjNTA3OWY1MzMxNjQxZGI5OTJmNzAiLCJyb2xlTmFtZSI6InVzZXIiLCJpYXQiOjE3MDk5OTA3OTIsImV4cCI6MTcwOTk5Nzk5Mn0.qkgNkd4VR0fhKFpGjGTVAuBW3K-Dje3wLveHiawi-8k"
+            },
+            "tests": []
+        },
+        {
+            "_id": "62f2af95-05b9-44b6-89e2-dce0e49b4a54",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "51b6099b-2cfd-448b-96a4-8b997e325e37",
+            "name": "GET USER POSTS BY ID",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/users/posts/65ec5079f5331641db992f70",
+            "method": "GET",
+            "sortNum": 140000,
+            "created": "2024-03-12T16:42:40.485Z",
+            "modified": "2024-03-14T18:39:06.378Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVjNTA3OWY1MzMxNjQxZGI5OTJmNzAiLCJyb2xlTmFtZSI6InVzZXIiLCJpYXQiOjE3MTAwMDE4NDMsImV4cCI6MTcxMDAwOTA0M30.PWomAb02yOdJofPTSoCIAEENUqqdgOnpoXAx99EggZ4"
+            },
+            "tests": []
+        },
+        {
+            "_id": "e01481cb-1940-414a-bf7e-98d02238b68b",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "51b6099b-2cfd-448b-96a4-8b997e325e37",
+            "name": "POST LIKE",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/posts/like/65ef7a5370eadbf3bd6aadd9",
+            "method": "PUT",
+            "sortNum": 150000,
+            "created": "2024-03-12T16:42:40.486Z",
+            "modified": "2024-03-14T18:39:12.647Z",
+            "headers": [],
+            "params": [],
+            "reqType": "put",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVmNzc2NzhiYTQyMGZjNjkwMjdjZTAiLCJyb2xlTmFtZSI6InVzZXIiLCJpYXQiOjE3MTAxOTMwNDYsImV4cCI6MTcxMDIwMDI0Nn0.bmYiPt9qU9QgpOTvd3U1fzYuSJbDxGoXToGVg3atdwY"
+            },
+            "tests": []
+        },
+        {
+            "_id": "8bdd7659-f856-4295-ae60-880479e6056d",
+            "colId": "02fd25c6-2164-4813-a9a0-272cb866f8ff",
+            "containerId": "f39b6eda-0508-4749-a5ea-48ffedf67272",
+            "name": "FOLLOW USER",
+            "url": "https://fsd-project-5-backend-2-dev-kjeb.3.us-1.fl0.io/api/users/follow/65ee0a64da8a6a7464e15fd2",
+            "method": "PUT",
+            "sortNum": 160000,
+            "created": "2024-03-12T16:42:40.487Z",
+            "modified": "2024-03-14T18:37:50.278Z",
+            "headers": [],
+            "params": [],
+            "reqType": "put",
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVlMGE2NGRhOGE2YTc0NjRlMTVmZDYiLCJyb2xlTmFtZSI6ImFkbWluIiwiaWF0IjoxNzEwMTQ0NDk5LCJleHAiOjE3MTAxNTE2OTl9.8adDiZ-nhtRhXDxvn5RmllcYhoqqGUNJVg_KriLG57M"
+            },
+            "tests": []
+        }
+    ]
+}
