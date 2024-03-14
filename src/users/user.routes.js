@@ -6,7 +6,7 @@ import { auth } from "../middlewares/auth.js";
 
 const router = Router()
 
-router.get('/', auth, getUsers)
+router.get('/', auth, isSuperAdmin, getUsers)
 router.get('/profile', auth, getUserProfile)
 router.put('/profile', auth, updateUserProfile)
 router.delete('/:id', auth, isSuperAdmin, deleteUserById)

@@ -140,6 +140,7 @@ The projetc consists in develop the backend of an social media aplication.
 <div align="center">
 <img width="803" alt="ERD" src="./img/DB_design.png">
 </div>
+
 ---
 
 - ### Endpoints :electric_plug:
@@ -274,7 +275,7 @@ The projetc consists in develop the backend of an social media aplication.
         Mandatory to send the token in the Bearer Authentication.
     </details>
 
-- `PUT /api/posts/{id}` - Update a appointment.
+- `PUT /api/posts/{id}` - Update a post.
   <details>
   <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary> 
   - Mandatory to be logged previusly.<br> 
@@ -338,9 +339,8 @@ The projetc consists in develop the backend of an social media aplication.
     </details>
 
 
-<summary style="font-weight: bold; font-size: 1.3em;">Admin endpoints</summary>
 
-<details>
+
 <summary style="font-weight: bold; font-size: 1.3em;">Super-Admin endpoints</summary>
 
 ##### USER AND ADMIN ENDPOINTS AND: 👇
