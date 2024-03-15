@@ -239,12 +239,13 @@ The projetc consists in develop the backend of an social media aplication.
 
     </details>
 
-- `PUT /api/users/follow/{id}` - Follow a user.
+- `PUT /api/users/follow/{id}` - Follow/Unfollow a user.
     <details>
       <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary>
         - Mandatory to be logged previusly.<br>
         - The user<br>
-        - To modify the password had to write two passwords.
+        - One endpoint, two actions. Same call for follow or unfollow user profile.
+
     </details>
     <details>
       <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
@@ -296,13 +297,13 @@ The projetc consists in develop the backend of an social media aplication.
 
       </details>
   </details>
-<details>
+
 
 - `PUT /api/posts/like/{id}` - Like/unlike a post.
     <details>
       <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary>
         - Mandatory to send the posts ID in the endpoint.<br>  
-        - Same call for like or unlike post.
+        - One endpoint, two actions. Same call for like or unlike post. 
     </details>
     <details>    
     <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
@@ -339,11 +340,9 @@ The projetc consists in develop the backend of an social media aplication.
     </details>
 
 
-
+<details>
 
 <summary style="font-weight: bold; font-size: 1.3em;">Super-Admin endpoints</summary>
-
-##### USER AND ADMIN ENDPOINTS AND: 👇
 
 ##### Users 👩‍💼👨‍💼
 
@@ -400,59 +399,6 @@ The projetc consists in develop the backend of an social media aplication.
       <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
         Mandatory to send the token in the Bearer Authentication.
     </details>
-
-
-
-##### Services 🎨
-
-- `POST /api/services` - Create a new service.
-    <details>
-      <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary>
-        - Mandatory to be logged previusly and be super-admin.
-    </details>
-    <details>
-      <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
-        Mandatory to send the token in the Bearer Authentication.
-    </details>
-    <details>
-      <summary style="font-weight: bold; font-size: 0.8em;">BODY</summary>
-
-        {
-          "serviceName": "SERVICENAME",
-          "description": "SERVICETEXT"
-        }
-
-    </details>
-
-- `PUT /api/services/{id}` - Update a service by ID.
-    <details>
-      <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary>
-        - Mandatory to be logged previusly and be super-admin.
-    </details>
-    <details>
-      <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
-        Mandatory to send the token in the Bearer Authentication.
-    </details>
-    <details>
-      <summary style="font-weight: bold; font-size: 0.8em;">BODY</summary>
-
-        {
-          "serviceName": "SERVICENAME",
-          "description": "SERVICETEXT"
-        }
-
-
-    </details>
-
-- `DELETE /api/services/{id}` - Delete a service by ID.
-    <details>
-      <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary> - Mandatory to be logged previusly and be super-admin.
-    </details>
-    <details>
-      <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
-          Mandatory to send the token in the Bearer Authentication.
-    </details>
-
 
 ---
 
