@@ -6,7 +6,6 @@ export const PostSchema = new Schema(
         title: {
             type: String,
             required: true,
-            unique: true,
         },
         description: {
             type: String,
@@ -24,7 +23,7 @@ export const PostSchema = new Schema(
         ],
         comments: [
             {
-                commentatorId: {
+                commentatorName: {
                     type: String
                 },
                 commentary: {

@@ -32,6 +32,15 @@ export const register = async (req, res) => {
             throw new Error("format email invalid")
         }
 
+        const user = await User.findOne(
+            {
+                email: email
+            }
+        )
+        
+        if (user) {
+            throw new Error("Email already registered")
+        }
         //Encrypt password
         const passwordEncrypted = bcrypt.hashSync(password, 10)
 
@@ -65,6 +74,9 @@ export const register = async (req, res) => {
 
         if (error.message === "First name, email and password are mandatory to register") {
             return handleError(res, error.message, 400)
+        }
+        if (error.message === "Email already registered") {
+            return handleError(res, error.message, 404)
         }
         if (error.message === "Password must contain between 6 and 10 characters") {
             return handleError(res, error.message, 401)
@@ -143,6 +155,7 @@ export const login = async (req, res) => {
         if (error.message === "email and password are mandatories") {
             return handleError(res, error.message, 404)
         }
+
         if (error.message === "Password must contain between 6 and 10 characters") {
             return handleError(res, error.message, 404)
         }

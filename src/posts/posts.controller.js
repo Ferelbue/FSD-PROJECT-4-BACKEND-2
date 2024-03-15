@@ -144,7 +144,7 @@ export const updatePostById = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "User updated",
+            message: "Post updated",
             data: postUpdated
         })
 

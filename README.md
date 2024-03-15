@@ -155,7 +155,8 @@ The projetc consists in develop the backend of an social media aplication.
 - `POST /api/auth/register` - Register a new user.
     <details>
       <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary>
-        - Forbidden to repeat an email address already registered. <br>- Last name not mandatory. 
+        - Forbidden to repeat an email address already registered. <br>
+        - Last name not mandatory. 
     </details>
     <details>
       <summary style="font-weight: bold; font-size: 0.8em;">BODY</summary>
@@ -166,7 +167,6 @@ The projetc consists in develop the backend of an social media aplication.
           "email": "pepe@pepe.com",
           "password": "123456"
         }
-
 
     </details>
 
@@ -243,7 +243,6 @@ The projetc consists in develop the backend of an social media aplication.
     <details>
       <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary>
         - Mandatory to be logged previusly.<br>
-        - The user<br>
         - One endpoint, two actions. Same call for follow or unfollow user profile.
 
     </details>
@@ -254,11 +253,44 @@ The projetc consists in develop the backend of an social media aplication.
 
 ##### Post 📄
 
+- `PUT /api/posts` - Create a post.
+  <details>
+  <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary> 
+  - Mandatory to be logged previusly.<br>
+  - Posibility to create post with the same title and description.
+  </details>
+  <details>
+  <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
+  Mandatory to send the token in the Bearer Authentication.
+  </details>
+  <details>
+  <summary style="font-weight: bold; font-size: 0.8em;">BODY</summary>
+
+            {
+              "title":"Ager cena aequitas tabgo sonitus.",
+              "description":"Accusamus amet suscipit in conspergo. Vilitas cribro vicissitudo vulnero adulatio adficio."
+            }
+
+      </details>
+  </details>
+
+- `DELETE /api/post/{id}` - Delete a post by ID.
+    <details>
+      <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary>
+        - Mandatory to be logged previusly.<br>
+        - Forbiden to delete other users posts.<br>
+    </details>
+    <details>
+      <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
+        Mandatory to send the token in the Bearer Authentication.
+    </details>
+
 - `GET /api/posts/own` - Retrieve user's posts.
     <details>
       <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary>
         - Mandatory to be logged previusly.<br>
-        - Forbiden to see other users posts.
+        - Forbiden to see other users posts.<br>
+        - Possibility to apply pagination adding '?limit=5&page=1' to the endpoint.
     </details>
     <details>
       <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
@@ -388,6 +420,17 @@ The projetc consists in develop the backend of an social media aplication.
     </details>
 
 ##### Posts 📄
+
+- `GET /api/posts/own` - Retrieve user's posts.
+    <details>
+      <summary style="font-weight: bold; font-size: 0.8em;">FEATURES</summary>
+        - Mandatory to be logged previusly as super-admin.<br>
+        - Possibility to apply pagination adding '?limit=5&page=1' to the endpoint.
+    </details>
+    <details>
+      <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
+        Mandatory to send the token in the Bearer Authentication.
+    </details>
 
 - `DELETE /api/post/{id}` - Delete a post by ID.
     <details>

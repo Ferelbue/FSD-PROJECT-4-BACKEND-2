@@ -13,7 +13,6 @@ export const getUsers = async (req, res) => {
         const skip = (actualPage - 1) * pageElements;
         //Retrieve data
         const userRole = req.tokenData.roleName;
-        const userId = req.tokenData.userId;
         //Filter
         const queryFilters = {}
 
@@ -31,6 +30,7 @@ export const getUsers = async (req, res) => {
         if (userRole !== "super-admin") {
             const userPublic = await User
                 .find({ public: true })
+                .find(queryFilters)
                 .select('-_id -password -createdAt -updatedAt')
                 .skip(skip)
                 .limit(pageElements);
@@ -43,7 +43,7 @@ export const getUsers = async (req, res) => {
         }
 
         const users = await User
-            .find(queryFilters)
+            
             .select('-_id -password -createdAt -updatedAt')
             .skip(skip)
             .limit(pageElements);
@@ -162,8 +162,8 @@ export const updateUserProfile = async (req, res) => {
         const emailExist = await User.findOne(
             {
 
-                    email: email,
-          
+                email: email,
+
             }
         )
 
@@ -289,7 +289,7 @@ export const updateUserRole = async (req, res) => {
         if (!role) {
             throw new Error("You should to introuce any data to update")
         }
-        if (role !== "user" && role !== "admin" && role !== "superAdmin") {
+        if (role !== "user" && role !== "admin" && role !== "super-admin") {
             throw new Error("The role provided its wrong")
         }
 
@@ -342,8 +342,9 @@ export const getPostByUserId = async (req, res) => {
         const posts = await Post
             .find({ userId: userId })
             .select("-_id -userId -updatedAt")
+        console.log(posts)
 
-        if (!posts) {
+        if (posts.length === 0) {
             throw new Error("Any post to retrieve")
         }
 
