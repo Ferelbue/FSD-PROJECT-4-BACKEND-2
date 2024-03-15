@@ -74,7 +74,7 @@ export const register = async (req, res) => {
             return handleError(res, error.message, 400)
         }
         
-        handleError(res, "Cant create book", 500)
+        handleError(res, "Cant create user", 500)
     }
 }
 
@@ -123,7 +123,8 @@ export const login = async (req, res) => {
         const token = jwt.sign(
             {
                 userId: user._id,
-                roleName: user.role
+                roleName: user.role,
+                userName:user.firstName
             },
             process.env.JWT_SECRET,
             {

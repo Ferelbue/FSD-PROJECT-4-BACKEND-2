@@ -1,4 +1,5 @@
 
+import bcrypt from "bcrypt";
 import { handleError } from "../utils/handleError.js";
 import User from "./User.js";
 import Post from "../posts/Posts.js";
@@ -62,7 +63,7 @@ export const getUsers = async (req, res) => {
             return handleError(res, error.message, 400)
         }
 
-        handleError(res, "Cant retrieve any book", 500)
+        handleError(res, "Cant retrieve any post", 500)
     }
 }
 
@@ -98,19 +99,112 @@ export const updateUserProfile = async (req, res) => {
 
     try {
         const userId = req.tokenData.userId
-        const firstName = req.body.firstName
-        const lastName = req.body.lastName
-        const email = req.body.email
+        let firstName = req.body.firstName
+        let lastName = req.body.lastName
+        let email = req.body.email
+        let password = req.body.password
+        let newPassword = req.body.newPassword
+
+        const exist = await User.findOne(
+            {
+                _id: userId,
+            }
+        )
 
         if (!firstName && !lastName && !email) {
-            console.log(email)
-
             throw new Error("You should to introuce any data to update")
         }
+
+        if (!firstName) {
+            firstName = exist.firstName
+        }
+
+        if (!password) {
+            password = exist.password
+        }
+
+        if (!lastName) {
+            lastName = exist.lastName
+        }
+        let flag = false;
+
+        if (!email) {
+            email = exist.email
+            flag = true;
+        }
+
+        if (firstName.length > 50) {
+
+            return res.status(400).json({
+                succes: false,
+                message: "First name too large"
+            })
+        }
+
+        if (lastName.length > 50) {
+
+            return res.status(400).json({
+                succes: false,
+                message: "Last name too large"
+            })
+        }
+        //validacion email
         const validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
         if (!validEmail.test(email)) {
-            throw new Error("Email format is not valid")
+            return res.status(401).json(
+                {
+                    success: false,
+                    message: "Email format invalid"
+                }
+            )
         }
+
+        const emailExist = await User.findOne(
+            {
+
+                    email: email,
+          
+            }
+        )
+
+        if (emailExist && !flag) {
+            return res.status(406).json({
+                success: false,
+                message: "Email already registered"
+            })
+        }
+
+        //validacion password
+        if (newPassword) {
+            if (newPassword.length < 6 || newPassword.length > 10) {
+                console.log("aqui")
+                return res.status(401).json({
+                    success: false,
+                    message: "Incorrect new password, min 6 max 10 characters"
+                })
+
+            }
+        }
+
+        if (newPassword) {
+
+            const passwordEqual = bcrypt.compareSync(password, exist.password)
+
+            if ((newPassword.length > 0) && (passwordEqual == true)) {
+
+                const newPasswordEncrypted = bcrypt.hashSync(newPassword, 8)
+                password = newPasswordEncrypted;
+
+            } else {
+                return res.status(200).json(
+                    {
+                        success: true,
+                        message: "Old password incorrect"
+                    })
+
+            }
+        }
+
         const userUpdated = await User.findOneAndUpdate(
             {
                 _id: userId
@@ -118,7 +212,8 @@ export const updateUserProfile = async (req, res) => {
             {
                 firstName,
                 lastName,
-                email
+                email,
+                password
             },
             {
                 new: true
@@ -128,7 +223,7 @@ export const updateUserProfile = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "User retrieved",
+            message: "User updated",
             data: userUpdated
         })
 
@@ -310,7 +405,7 @@ export const followUserById = async (req, res) => {
                                 _id: userFollower
                             }
                         ).select('-_id -password -role -public -following -follower -likes -commentarys -createdAt -updatedAt')
-                
+
                         const printUserToFollowUpdated = await User.find(
                             {
                                 _id: userToFollow

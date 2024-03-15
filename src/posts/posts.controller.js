@@ -249,7 +249,7 @@ export const getPosts = async (req, res) => {
             return handleError(res, error.message, 400)
         }
 
-        handleError(res, "Cant retrieve any book", 500)
+        handleError(res, "Cant retrieve any post", 500)
     }
 }
 
@@ -413,6 +413,6 @@ export const getFollowersPosts = async (req, res) => {
             return handleError(res, error.message, 400)
         }
 
-        handleError(res, "Cant retrieve any book", 500)
+        handleError(res, "Cant retrieve any post", 500)
     }
 }
