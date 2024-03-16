@@ -93,7 +93,7 @@ The projetc consists in develop the backend of an social media aplication.
   - [Open this file in Thunder client extension and test de API ](./HTTP/thunder-collection_PROJECT_5_LOCAL.json)
 
 ---
-
+ 
 ## Live Deployment :satellite:
 
 #### ⚠️You'll need add a `.env` file based on the provided `.env.online.example` file with the database credentials⚠️
