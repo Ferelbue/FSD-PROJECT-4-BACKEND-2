@@ -209,7 +209,7 @@ export const getPosts = async (req, res) => {
 
         const posts = await Post
             .find()
-            .select('-_id -password -createdAt -updatedAt')
+            .select('-password -createdAt -updatedAt')
             .skip(skip)
             .limit(pageElements);
 
@@ -230,7 +230,7 @@ export const getPosts = async (req, res) => {
             for (let i = 0; i < posts.length; i++) {
                 const userPublicPosts = await User
                     .find({ _id: posts[i].userId, public: true })
-                    .select('-_id -password -createdAt -updatedAt')
+                    .select('-password -createdAt -updatedAt')
 
                 if (userPublicPosts.length > 0) {
                     publicPosts.push(posts[i])
