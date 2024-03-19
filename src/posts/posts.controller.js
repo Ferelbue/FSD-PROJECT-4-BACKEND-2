@@ -174,7 +174,7 @@ export const getUserPosts = async (req, res) => {
 
         const userPosts = await Post
             .find({ userId: userId })
-            .select('-_id -password -createdAt -updatedAt')
+            .select('-password -createdAt -updatedAt')
             .skip(skip)
             .limit(pageElements);
 
