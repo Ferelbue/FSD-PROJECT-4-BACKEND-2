@@ -63,7 +63,7 @@ export const getUsers = async (req, res) => {
             return handleError(res, error.message, 400)
         }
 
-        handleError(res, "Cant retrieve any post", 500)
+        handleError(res, "Cant retrieve any user", 500)
     }
 }
 
@@ -74,7 +74,7 @@ export const getUserProfile = async (req, res) => {
 
         const user = await User
             .findById(userId)
-            .select('-_id -password -createdAt -updatedAt')
+            .select('-password -createdAt -updatedAt')
 
         if (!user) {
             throw new Error("Any user found to retireve")

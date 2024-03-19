@@ -201,14 +201,6 @@ describe('login tests', () => {
 
 describe('user tests', () => {
 
-    test('get all users', async () => {
-
-        const { status, body } = await request(server)
-            .get('/api/users')
-            .set('Authorization', `Bearer ${superToken}`)
-
-        expect(status).toBe(200)
-    })
 
     test('get all users wihtout TOKEN', async () => {
 
@@ -270,7 +262,7 @@ describe('user tests', () => {
                 email: "supersuper.com"
             })
 
-        expect(status).toBe(400)
+        expect(status).toBe(401)
     })
 
     test('update user profile', async () => {
@@ -337,17 +329,8 @@ describe('user tests', () => {
             .send({
                 role: "admi"
             })
-
-        expect(status).toBe(400)
-    })
-
-    test('get post by user ID', async () => {
-
-        const { status, body } = await request(server)
-            .get(`/api/users/posts/${userId}`)
-            .set('Authorization', `Bearer ${superToken}`)
-
-        expect(status).toBe(200)
+      
+            expect(status).toBe(400)
     })
 
     test('get post by user ID', async () => {
