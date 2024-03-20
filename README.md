@@ -371,6 +371,7 @@ The projetc consists in develop the backend of an social media aplication.
         Mandatory to send the token in the Bearer Authentication.
     </details>
 
+</details>
 
 <details>
 
@@ -442,6 +443,7 @@ The projetc consists in develop the backend of an social media aplication.
       <summary style="font-weight: bold; font-size: 0.8em;">TOKEN</summary>
         Mandatory to send the token in the Bearer Authentication.
     </details>
+</details>
 
 ---
 

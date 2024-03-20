@@ -1,7 +1,7 @@
+import "dotenv/config"
 import request from "supertest"
 import { dbConnection } from "../database/db.js"
 import { app } from "../app.js"
-import "dotenv/config"
 import mongoose from "mongoose"
 
 let server
