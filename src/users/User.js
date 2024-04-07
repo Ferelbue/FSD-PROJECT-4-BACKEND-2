@@ -20,7 +20,7 @@ export const UserSchema = new Schema(
         image: {
             type: String,
             required: true,
-            unique: true
+            unique: false
         },
         password: {
             type: String,

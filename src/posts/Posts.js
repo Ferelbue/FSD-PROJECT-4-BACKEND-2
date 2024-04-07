@@ -11,6 +11,11 @@ export const PostSchema = new Schema(
             type: String,
             required: true,
         },
+        image: {
+            type: String,
+            required: true,
+            unique: true
+        },
         userId: {
             type: String,
             required: true,

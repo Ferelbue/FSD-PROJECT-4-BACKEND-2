@@ -476,14 +476,15 @@ export const getFollowers = async (req, res) => {
 
     try {
         //Retrieve data
-        const userRole = req.tokenData.roleName;
         const userId = req.tokenData.userId
         let usersFollowers = [];
+        let usersFollowersFinal = [];
 
         const user = await User
             .find()
             .select('-password -createdAt -updatedAt')
 
+            console.log(user,"asdasdasd")
 
         const user2 = await User
             .findById(userId)
@@ -495,16 +496,32 @@ export const getFollowers = async (req, res) => {
 
                 if (user[i].following[j].equals(user2._id)) {
 
-                    usersFollowers.push(user[i].following[j].toString())
+                    usersFollowers.push(user[i]._id.toString())
+                    console.log(user[i]._id.toString());
                 }
             }
         }
         console.log(usersFollowers);
 
+
+        for (let i = 0; i < usersFollowers.length; i++) {
+            const user3 = await User
+            .findById(usersFollowers[i])
+            .select('-id -email -role -public -password -createdAt -updatedAt')
+
+            usersFollowersFinal.push(user3)
+        }
+
+
+        console.log(usersFollowersFinal)
+
+
+
+
         return res.status(200).json({
             success: true,
             message: "all users retrieved",
-            data: user
+            data: usersFollowersFinal
         })
 
     } catch (error) {
