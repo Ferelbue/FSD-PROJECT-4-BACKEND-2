@@ -19,6 +19,7 @@ export const seedDatabase = async () => {
             firstName: "user",
             lastName: "user",
             email: "user@user.com",
+            image: "../../img/pers1.png",
             password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
             role: "user",
             public: "true"
@@ -30,6 +31,7 @@ export const seedDatabase = async () => {
             firstName: "admin",
             lastName: "admin",
             email: "admin@admin.com",
+            image: "../../img/pers2.png",
             password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
             role: "admin",
             public: "true"
@@ -41,6 +43,7 @@ export const seedDatabase = async () => {
             firstName: "superAdmin",
             lastName: "superAdmin",
             email: "super@super.com",
+            image: "../../img/pers3.png",
             password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
             role: "super-admin",
             public: "true"
@@ -48,12 +51,13 @@ export const seedDatabase = async () => {
         await user3.save();
 
         // Generate ramdom users
-        for (let i = 0; i < 7; i++) {
+        for (let i = 4; i < 11; i++) {
 
             const user = new User({
                 firstName: faker.person.firstName(),
                 lastName: faker.person.lastName(),
                 email: faker.internet.email(),
+                image: `../../img/pers${i}.png`,
                 password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
                 public: faker.datatype.boolean()
             })

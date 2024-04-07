@@ -31,7 +31,7 @@ export const getUsers = async (req, res) => {
             const userPublic = await User
                 .find({ public: true })
                 .find(queryFilters)
-                .select('-_id -password -createdAt -updatedAt')
+                .select('-password -createdAt -updatedAt')
                 .skip(skip)
                 .limit(pageElements);
 
@@ -43,8 +43,8 @@ export const getUsers = async (req, res) => {
         }
 
         const users = await User
-            
-            .select('-_id -password -createdAt -updatedAt')
+
+            .select('-password -createdAt -updatedAt')
             .skip(skip)
             .limit(pageElements);
 
@@ -377,14 +377,14 @@ export const followUserById = async (req, res) => {
         const userFollowerUpdated = await User.findOne(
             {
                 _id: userFollower
-            },
-        )
+            }
+        ).populate('following', 'firstName')
 
         const userToFollowUpdated = await User.findOne(
             {
                 _id: userToFollow
             },
-        )
+        ).populate('follower', 'firstName')
 
         const userFollowerId = userFollowerUpdated._id.toString()
 
@@ -469,5 +469,49 @@ export const followUserById = async (req, res) => {
         }
 
         handleError(res, "Cant update any propery", 500)
+    }
+}
+
+export const getFollowers = async (req, res) => {
+
+    try {
+        //Retrieve data
+        const userRole = req.tokenData.roleName;
+        const userId = req.tokenData.userId
+        let usersFollowers = [];
+
+        const user = await User
+            .find()
+            .select('-password -createdAt -updatedAt')
+
+
+        const user2 = await User
+            .findById(userId)
+            .select('-password -createdAt -updatedAt')
+
+        for (let i = 0; i < user.length; i++) {
+
+            for (let j = 0; j < user[i].following.length; j++) {
+
+                if (user[i].following[j].equals(user2._id)) {
+
+                    usersFollowers.push(user[i].following[j].toString())
+                }
+            }
+        }
+        console.log(usersFollowers);
+
+        return res.status(200).json({
+            success: true,
+            message: "all users retrieved",
+            data: user
+        })
+
+    } catch (error) {
+        if (error.message === "Any user found to retireve") {
+            return handleError(res, error.message, 400)
+        }
+
+        handleError(res, "Cant retrieve any user", 500)
     }
 }
