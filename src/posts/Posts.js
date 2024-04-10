@@ -11,9 +11,16 @@ export const PostSchema = new Schema(
             type: String,
             required: true,
         },
+        image: {
+            type: String,
+            required: true,
+        },
         userId: {
             type: String,
             required: true,
+        },
+        userName: {
+            type: String,
         },
         like: [
             {

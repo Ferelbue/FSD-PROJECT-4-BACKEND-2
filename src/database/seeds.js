@@ -19,7 +19,7 @@ export const seedDatabase = async () => {
             firstName: "user",
             lastName: "user",
             email: "user@user.com",
-            image: "../../img/pers1.png",
+            image: faker.image.avatar(),
             password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
             role: "user",
             public: "true"
@@ -31,7 +31,7 @@ export const seedDatabase = async () => {
             firstName: "admin",
             lastName: "admin",
             email: "admin@admin.com",
-            image: "../../img/pers2.png",
+            image: faker.image.avatar(),
             password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
             role: "admin",
             public: "true"
@@ -43,7 +43,7 @@ export const seedDatabase = async () => {
             firstName: "superAdmin",
             lastName: "superAdmin",
             email: "super@super.com",
-            image: "../../img/pers3.png",
+            image: faker.image.avatar(),
             password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
             role: "super-admin",
             public: "true"
@@ -51,13 +51,13 @@ export const seedDatabase = async () => {
         await user3.save();
 
         // Generate ramdom users
-        for (let i = 4; i < 11; i++) {
+        for (let i = 4; i < 31; i++) {
 
             const user = new User({
-                firstName: faker.person.firstName(),
-                lastName: faker.person.lastName(),
+                firstName: faker.person.firstName().toLowerCase(),
+                lastName: faker.person.lastName().toLowerCase(),
                 email: faker.internet.email(),
-                image: `../../img/pers${i}.png`,
+                image: faker.image.avatar(),
                 password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
                 public: faker.datatype.boolean()
             })
@@ -74,15 +74,16 @@ export const seedDatabase = async () => {
         console.log("---------------------------------------")
 
         //Generate ramdom posts
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 80; i++) {
 
             const post = new Post({
                 title: faker.lorem.sentence(),
                 description: faker.lorem.text(),
+                image: faker.image.urlLoremFlickr(),
                 userId: usersId[Math.floor(Math.random() * usersId.length)],
                 comments: {
                     commentatorId: usersId[Math.floor(Math.random() * usersId.length)],
-                    commentary: faker.lorem.paragraph()
+                    commentary: faker.lorem.paragraphs({ min: 1, max: 3 })
                 },
                 like: [usersId[Math.floor(Math.random() * usersId.length)], usersId[Math.floor(Math.random() * usersId.length)], usersId[Math.floor(Math.random() * usersId.length)]]
             })
