@@ -10,9 +10,11 @@ export const createPost = async (req, res) => {
         const userId = req.tokenData.userId
         const title = req.body.title
         const description = req.body.description
-
+        const image = req.body.image
+        
         const user = await User.findById(userId)
-
+        
+        
         //Data validation
         if (!title && !description) {
             throw new Error("You should to introuce any data to update")
@@ -22,14 +24,18 @@ export const createPost = async (req, res) => {
         const newPost = await Post.create({
             title,
             description,
-            userId: user._id
+            image,
+            userId: user._id,
+            userName:user.firstName
         })
-
         //Data response
+        console.log(newPost)
         const printDescription = {
             title: newPost.title,
             description: newPost.description,
+            image: newPost.image,
             user: newPost.userId,
+            userName:newPost.userName
         }
 
         //Response
@@ -113,10 +119,11 @@ export const updatePostById = async (req, res) => {
 
         const title = req.body.title
         const description = req.body.description
+        const image = req.body.image
 
         const post = await Post.findById(postId)
 
-        if (!title && !description) {
+        if (!title && !description && !image) {
             throw new Error("You should to introuce any data to update")
         }
 
@@ -134,7 +141,8 @@ export const updatePostById = async (req, res) => {
             },
             {
                 title,
-                description
+                description,
+                image
             },
             {
                 new: true
@@ -236,6 +244,7 @@ export const getPosts = async (req, res) => {
                     publicPosts.push(posts[i])
                 }
             }
+            console.log(publicPosts)
 
             return res.status(200).json({
                 success: true,
@@ -352,7 +361,7 @@ export const postComment = async (req, res) => {
         const post = await Post.findById(postId)
         const user = await User.findById(commentatorId)
 
-        post.comments.push({commentatorId:user.email, commentary:commentary})
+        post.comments.push({commentatorName:user.firstName, commentary:commentary})
         await post.save();
 
         const post2 = await Post.findById(postId)

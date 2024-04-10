@@ -51,11 +51,11 @@ export const seedDatabase = async () => {
         await user3.save();
 
         // Generate ramdom users
-        for (let i = 4; i < 11; i++) {
+        for (let i = 4; i < 31; i++) {
 
             const user = new User({
-                firstName: faker.person.firstName(),
-                lastName: faker.person.lastName(),
+                firstName: faker.person.firstName().toLowerCase(),
+                lastName: faker.person.lastName().toLowerCase(),
                 email: faker.internet.email(),
                 image: faker.image.avatar(),
                 password: "$2b$08$lV2.D7/ibyEeWGbaJibeb.FknmnrSlcfpsYfNqbgZJJ0pKolyvObG",
@@ -74,7 +74,7 @@ export const seedDatabase = async () => {
         console.log("---------------------------------------")
 
         //Generate ramdom posts
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 80; i++) {
 
             const post = new Post({
                 title: faker.lorem.sentence(),

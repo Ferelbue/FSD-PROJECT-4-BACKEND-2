@@ -29,7 +29,6 @@ export const getUsers = async (req, res) => {
         //Retrieve public users
         if (userRole !== "super-admin") {
             const userPublic = await User
-                .find({ public: true })
                 .find(queryFilters)
                 .select('-password -createdAt -updatedAt')
                 .skip(skip)
@@ -43,7 +42,7 @@ export const getUsers = async (req, res) => {
         }
 
         const users = await User
-
+            .find(queryFilters)
             .select('-password -createdAt -updatedAt')
             .skip(skip)
             .limit(pageElements);
@@ -75,6 +74,8 @@ export const getUserProfile = async (req, res) => {
         const user = await User
             .findById(userId)
             .select('-password -createdAt -updatedAt')
+            .populate("following", "firstName lastName image _id")
+            .populate("follower", "firstName lastName image _id");
 
         if (!user) {
             throw new Error("Any user found to retireve")
@@ -90,6 +91,9 @@ export const getUserProfile = async (req, res) => {
         if (error.message === "Any user found to retireve") {
             return handleError(res, error.message, 400)
         }
+        // if (error.message === "JWT NOT VALID OR MALFORMED") {
+        //     return handleError(res, error.message, 400)
+        // }
 
         handleError(res, "Cant retrieve any user", 500)
     }
@@ -101,9 +105,7 @@ export const updateUserProfile = async (req, res) => {
         const userId = req.tokenData.userId
         let firstName = req.body.firstName
         let lastName = req.body.lastName
-        let email = req.body.email
-        let password = req.body.password
-        let newPassword = req.body.newPassword
+        let image = req.body.image
 
         const exist = await User.findOne(
             {
@@ -114,23 +116,17 @@ export const updateUserProfile = async (req, res) => {
         if (!firstName && !lastName && !email) {
             throw new Error("You should to introuce any data to update")
         }
-
+        console.log(lastName.length)
         if (!firstName) {
             firstName = exist.firstName
-        }
-
-        if (!password) {
-            password = exist.password
         }
 
         if (!lastName) {
             lastName = exist.lastName
         }
-        let flag = false;
 
-        if (!email) {
-            email = exist.email
-            flag = true;
+        if (!image) {
+            lastName = exist.image
         }
 
         if (firstName.length > 50) {
@@ -148,62 +144,6 @@ export const updateUserProfile = async (req, res) => {
                 message: "Last name too large"
             })
         }
-        //validacion email
-        const validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-        if (!validEmail.test(email)) {
-            return res.status(401).json(
-                {
-                    success: false,
-                    message: "Email format invalid"
-                }
-            )
-        }
-
-        const emailExist = await User.findOne(
-            {
-
-                email: email,
-
-            }
-        )
-
-        if (emailExist && !flag) {
-            return res.status(406).json({
-                success: false,
-                message: "Email already registered"
-            })
-        }
-
-        //validacion password
-        if (newPassword) {
-            if (newPassword.length < 6 || newPassword.length > 10) {
-                console.log("aqui")
-                return res.status(401).json({
-                    success: false,
-                    message: "Incorrect new password, min 6 max 10 characters"
-                })
-
-            }
-        }
-
-        if (newPassword) {
-
-            const passwordEqual = bcrypt.compareSync(password, exist.password)
-
-            if ((newPassword.length > 0) && (passwordEqual == true)) {
-
-                const newPasswordEncrypted = bcrypt.hashSync(newPassword, 8)
-                password = newPasswordEncrypted;
-
-            } else {
-                return res.status(200).json(
-                    {
-                        success: true,
-                        message: "Old password incorrect"
-                    })
-
-            }
-        }
 
         const userUpdated = await User.findOneAndUpdate(
             {
@@ -212,8 +152,7 @@ export const updateUserProfile = async (req, res) => {
             {
                 firstName,
                 lastName,
-                email,
-                password
+                image,
             },
             {
                 new: true
@@ -484,7 +423,7 @@ export const getFollowers = async (req, res) => {
             .find()
             .select('-password -createdAt -updatedAt')
 
-            console.log(user,"asdasdasd")
+        console.log(user, "asdasdasd")
 
         const user2 = await User
             .findById(userId)
@@ -506,8 +445,8 @@ export const getFollowers = async (req, res) => {
 
         for (let i = 0; i < usersFollowers.length; i++) {
             const user3 = await User
-            .findById(usersFollowers[i])
-            .select('-id -email -role -public -password -createdAt -updatedAt')
+                .findById(usersFollowers[i])
+                .select('-id -email -role -public -password -createdAt -updatedAt')
 
             usersFollowersFinal.push(user3)
         }
