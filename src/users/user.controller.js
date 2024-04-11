@@ -98,6 +98,40 @@ export const getUserProfile = async (req, res) => {
         handleError(res, "Cant retrieve any user", 500)
     }
 }
+export const getUserProfileById = async (req, res) => {
+
+    try {
+        const userId = req.tokenData.userId
+        const userIdToBring = req.params.userId
+        console.log("perro")
+        console.log(userIdToBring)
+
+        const user = await User
+            .findById(userIdToBring)
+            .select('-password -createdAt -updatedAt')
+            .populate("title", "title description image")
+            console.log(user)
+        if (!user) {
+            throw new Error("Any user found to retireve")
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "User retrieved",
+            data: user
+        })
+
+    } catch (error) {
+        if (error.message === "Any user found to retireve") {
+            return handleError(res, error.message, 400)
+        }
+        // if (error.message === "JWT NOT VALID OR MALFORMED") {
+        //     return handleError(res, error.message, 400)
+        // }
+
+        handleError(res, "Cant retrieve any user", 500)
+    }
+}
 
 export const updateUserProfile = async (req, res) => {
 
@@ -306,92 +340,66 @@ export const followUserById = async (req, res) => {
 
     try {
 
-        const userToFollow = req.params.userId
-        const userFollower = req.tokenData.userId
+        const userToFollowId = req.params.userId;
+        const userFollowerId = req.tokenData.userId;
 
-        if (!userToFollow) {
+        if (!userToFollowId) {
             throw new Error("You should to introuce user to follow")
         }
 
         const userFollowerUpdated = await User.findOne(
             {
-                _id: userFollower
+                _id: userFollowerId
             }
         ).populate('following', 'firstName')
 
         const userToFollowUpdated = await User.findOne(
             {
-                _id: userToFollow
+                _id: userToFollowId
             },
         ).populate('follower', 'firstName')
 
-        const userFollowerId = userFollowerUpdated._id.toString()
-
         for (let i = 0; i < userToFollowUpdated.follower.length; i++) {
+            console.log(userToFollowUpdated.follower[i]._id.toString(), "este")
+            if (userToFollowUpdated.follower[i]._id.toString() === userFollowerId) {
 
-            if (userToFollowUpdated.follower[i].toString() === userFollowerId) {
+                const userFollowerUpdated = await User.findOneAndUpdate(
+                    { _id: userFollowerId },
+                    { $pull: { following: userToFollowId } },
+                    { new: true }
+                ).populate('following', 'firstName');
 
-                userToFollowUpdated.follower.splice(i, 1)
-                await userToFollowUpdated.save();
+                const userToFollowUpdated = await User.findOneAndUpdate(
+                    { _id: userToFollowId },
+                    { $pull: { follower: userFollowerId } },
+                    { new: true }
+                ).populate('follower', 'firstName');
 
-                for (let j = 0; j < userFollowerUpdated.following.length; j++) {
-
-                    if (userFollowerUpdated.following[j].toString() === userToFollow) {
-                        userFollowerUpdated.following.splice(j, 1)
-                        await userFollowerUpdated.save()
-
-                        const printUserFollowerUpdated = await User.find(
-                            {
-                                _id: userFollower
-                            }
-                        ).select('-_id -password -role -public -following -follower -likes -commentarys -createdAt -updatedAt')
-
-                        const printUserToFollowUpdated = await User.find(
-                            {
-                                _id: userToFollow
-                            }
-                        ).select('-_id -password -role -public -following -follower -likes -commentarys -createdAt -updatedAt')
-
-                        return res.status(200).json({
-                            success: true,
-                            message: "User succesfully unfollow",
-                            data: printUserToFollowUpdated, printUserFollowerUpdated
-                        })
-
-                    }
-                }
+                return res.status(200).json({
+                    success: true,
+                    message: "User successfully unfollowed",
+                    data: { userToFollowUpdated, userFollowerUpdated }
+                });
             }
-
         }
 
-        userFollowerUpdated.following.push(userToFollow);
-        await userFollowerUpdated.save();
+        const userFollowerUpdated2 = await User.findOneAndUpdate(
+            { _id: userFollowerId },
+            { $addToSet: { following: userToFollowId } },
+            { new: true }
+        ).populate('following', 'firstName');
 
-        userToFollowUpdated.follower.push(userFollower);
-        await userToFollowUpdated.save();
-
-        if (!userToFollowUpdated) {
-            throw new Error("Any user found to update")
-        }
-
-        const printUserFollowerUpdated = await User.find(
-            {
-                _id: userFollower
-            }
-        ).select('-_id -password -role -public -following -follower -likes -commentarys -createdAt -updatedAt')
-
-        const printUserToFollowUpdated = await User.find(
-            {
-                _id: userToFollow
-            }
-        ).select('-_id -password -role -public -following -follower -likes -commentarys -createdAt -updatedAt')
-
+        const userToFollowUpdated2 = await User.findOneAndUpdate(
+            { _id: userToFollowId },
+            { $addToSet: { follower: userFollowerId } },
+            { new: true }
+        ).populate('follower', 'firstName');
 
         return res.status(200).json({
             success: true,
-            message: "User succesfully follow",
-            data: printUserToFollowUpdated, printUserFollowerUpdated
-        })
+            message: "User successfully followed",
+            data: { userToFollowUpdated2, userFollowerUpdated2 }
+        });
 
     } catch (error) {
         if (error.message === "You should to introuce any data to update") {
