@@ -22,6 +22,11 @@ export const PostSchema = new Schema(
         userName: {
             type: String,
         },
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
         like: [
             {
                 type: Schema.Types.ObjectId,

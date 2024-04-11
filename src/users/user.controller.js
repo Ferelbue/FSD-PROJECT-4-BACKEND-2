@@ -98,19 +98,17 @@ export const getUserProfile = async (req, res) => {
         handleError(res, "Cant retrieve any user", 500)
     }
 }
+
 export const getUserProfileById = async (req, res) => {
 
     try {
         const userId = req.tokenData.userId
         const userIdToBring = req.params.userId
-        console.log("perro")
         console.log(userIdToBring)
 
         const user = await User
             .findById(userIdToBring)
             .select('-password -createdAt -updatedAt')
-            .populate("title", "title description image")
-            console.log(user)
         if (!user) {
             throw new Error("Any user found to retireve")
         }
@@ -315,7 +313,8 @@ export const getPostByUserId = async (req, res) => {
         const posts = await Post
             .find({ userId: userId })
             .select("-_id -userId -updatedAt")
-        console.log(posts)
+            .populate('userId', 'firstName lastName image follower following')
+
 
         if (posts.length === 0) {
             throw new Error("Any post to retrieve")

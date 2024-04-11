@@ -12,7 +12,7 @@ router.get('/profile/:userId', auth, getUserProfileById)
 router.put('/profile', auth, updateUserProfile)
 router.delete('/:id', auth, isSuperAdmin, deleteUserById)
 router.put('/:id/role', auth, isSuperAdmin, updateUserRole)
-router.get('/posts/:userId', auth, isSuperAdmin, getPostByUserId)
+router.get('/posts/:userId', auth, getPostByUserId)
 router.put('/follow/:userId', auth, followUserById)
 router.get('/followers', auth, getFollowers)
 
