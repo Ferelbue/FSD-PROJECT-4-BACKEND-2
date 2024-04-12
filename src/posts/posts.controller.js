@@ -267,7 +267,8 @@ export const getPostById = async (req, res) => {
     try {
         const postId = req.params.id
         const userId = req.tokenData.userId
-
+        console.log(postId)
+        console.log(userId)
         const post = await Post.findById(postId)
 
         if (!post) {
