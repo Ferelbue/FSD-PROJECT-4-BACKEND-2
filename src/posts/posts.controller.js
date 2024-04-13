@@ -218,6 +218,7 @@ export const getPosts = async (req, res) => {
         const posts = await Post
             .find()
             .select('-password -createdAt -updatedAt')
+            .populate('userId','firstName')
             .skip(skip)
             .limit(pageElements);
 

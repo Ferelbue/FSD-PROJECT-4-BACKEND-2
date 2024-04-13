@@ -8,9 +8,12 @@ export const getUsers = async (req, res) => {
 
     try {
         //Pagination
+
         const pageElements = req.query.limit;
         const actualPage = req.query.page;
         const skip = (actualPage - 1) * pageElements;
+        console.log(pageElements)
+        console.log(actualPage)
         //Retrieve data
         const userRole = req.tokenData.roleName;
         //Filter
@@ -220,6 +223,10 @@ export const deleteUserById = async (req, res) => {
         if ((userLoged !== userToRemove) && (roleLoged !== "super-admin")) {
             throw new Error("You dont have permitions to modidy this role")
         }
+        if ((userLoged === userToRemove)) {
+            throw new Error("You dont have permitions to modidy this role")
+        }
+
 
         const userDeleted = await User.findOneAndDelete(
             {
