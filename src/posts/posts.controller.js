@@ -11,10 +11,10 @@ export const createPost = async (req, res) => {
         const title = req.body.title
         const description = req.body.description
         const image = req.body.image
-        
+
         const user = await User.findById(userId)
-        
-        
+
+
         //Data validation
         if (!title && !description) {
             throw new Error("You should to introuce any data to update")
@@ -26,7 +26,7 @@ export const createPost = async (req, res) => {
             description,
             image,
             userId: user._id,
-            userName:user.firstName
+            userName: user.firstName
         })
         //Data response
         console.log(newPost)
@@ -35,7 +35,7 @@ export const createPost = async (req, res) => {
             description: newPost.description,
             image: newPost.image,
             user: newPost.userId,
-            userName:newPost.userName
+            userName: newPost.userName
         }
 
         //Response
@@ -209,16 +209,23 @@ export const getPosts = async (req, res) => {
 
     try {
         //Pagination
-        const pageElements = req.query.limit;
         const actualPage = req.query.page;
+        const pageElements = req.query.limit;
         const skip = (actualPage - 1) * pageElements;
-
+        console.log(pageElements)
+        console.log(actualPage)
         const roleName = req.tokenData.roleName
 
+        const queryFilters = {}
+
+        if (req.query.title) {
+            queryFilters.title = new RegExp(req.query.title,'i');   
+        }
+
         const posts = await Post
-            .find()
+            .find(queryFilters)
             .select('-password -createdAt -updatedAt')
-            .populate('userId','firstName')
+            .populate('userId', 'firstName')
             .skip(skip)
             .limit(pageElements);
 
@@ -227,8 +234,9 @@ export const getPosts = async (req, res) => {
         }
 
         let publicPosts = []
-        //Retrieve all post if you are superAdmind and all public user post if you are a user
-        if (roleName === "super-admin") {
+        console.log(roleName)
+        if (roleName === "super-admin" || roleName === "super") {
+
             return res.status(200).json({
                 success: true,
                 message: "User retrieved",
@@ -323,7 +331,7 @@ export const postLike = async (req, res) => {
 
             user.likes.push(postId)
             await user.save();
-        } 
+        }
 
         const postUpdated = await Post.find(
             {
@@ -363,12 +371,12 @@ export const postComment = async (req, res) => {
         const post = await Post.findById(postId)
         const user = await User.findById(commentatorId)
 
-        post.comments.push({commentatorName:user.firstName, commentary:commentary})
+        post.comments.push({ commentatorName: user.firstName, commentary: commentary })
         await post.save();
 
         const post2 = await Post.findById(postId)
 
-        const positionLastComment = post2.comments.length-1
+        const positionLastComment = post2.comments.length - 1
 
         user.commentarys.push(post2.comments[positionLastComment]._id)
         await user.save();
@@ -403,7 +411,7 @@ export const getFollowersPosts = async (req, res) => {
         let posts = []
         const user = await User.findById(userId)
 
-        for(let i=0; i<user.follower.length;i++){
+        for (let i = 0; i < user.follower.length; i++) {
             const post = await Post.find(
                 {
                     userId: user.follower[i]
@@ -412,12 +420,12 @@ export const getFollowersPosts = async (req, res) => {
             posts.push(post)
         }
 
-            return res.status(200).json({
-                success: true,
-                message: "User retrieved",
-                data: posts
-            })
-        
+        return res.status(200).json({
+            success: true,
+            message: "User retrieved",
+            data: posts
+        })
+
 
     } catch (error) {
         if (error.message === "Any post found to retireve") {

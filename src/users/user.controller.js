@@ -20,7 +20,7 @@ export const getUsers = async (req, res) => {
         const queryFilters = {}
 
         if (req.query.firstName) {
-            queryFilters.firstName = new RegExp(req.query.firstName);
+            queryFilters.firstName = new RegExp(req.query.firstName);   
         }
         if (req.query.lastName) {
             queryFilters.lastName = new RegExp(req.query.lastName);
