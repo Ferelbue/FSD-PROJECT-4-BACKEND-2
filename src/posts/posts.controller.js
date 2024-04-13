@@ -122,6 +122,9 @@ export const updatePostById = async (req, res) => {
         const image = req.body.image
 
         const post = await Post.findById(postId)
+        console.log(post.userId.toString())
+        console.log(userId)
+
 
         if (!title && !description && !image) {
             throw new Error("You should to introuce any data to update")
@@ -131,7 +134,7 @@ export const updatePostById = async (req, res) => {
             throw new Error("Any post to update")
         }
 
-        if (userId !== post.userId) {
+        if (userId !== post.userId.toString()) {
             throw new Error("Cant modificate another person post")
         }
 
@@ -224,7 +227,7 @@ export const getPosts = async (req, res) => {
 
         const posts = await Post
             .find(queryFilters)
-            .select('-password -createdAt -updatedAt')
+            .select('-password -updatedAt')
             .populate('userId', 'firstName')
             .skip(skip)
             .limit(pageElements);
