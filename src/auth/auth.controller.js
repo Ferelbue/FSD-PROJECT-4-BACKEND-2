@@ -16,7 +16,7 @@ export const register = async (req, res) => {
         const password = req.body.password
         const image = req.body.image
 
-        console.log("1")
+
         //Data input validation
         if(!firstName || !email || !password){
             throw new Error("First name, email and password are mandatory to register")
@@ -33,7 +33,7 @@ export const register = async (req, res) => {
         if (!validEmail.test(email)) {
             throw new Error("format email invalid")
         }
-        console.log("2")
+
         const user = await User.findOne(
             {
                 email: email
@@ -45,11 +45,7 @@ export const register = async (req, res) => {
         }
         //Encrypt password
         const passwordEncrypted = bcrypt.hashSync(password, 10)
-        console.log(email)
-        console.log(passwordEncrypted)
-        
-        console.log(firstName)
-        console.log(lastName)
+
         //Create in data base
         const newUser = await User.create(
             {

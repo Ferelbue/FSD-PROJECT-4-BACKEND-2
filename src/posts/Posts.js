@@ -40,7 +40,12 @@ export const PostSchema = new Schema(
                 },
                 commentary: {
                     type: String
-                }
+                },
+                commentatorId: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'User',
+                    required: true
+                },
             }
         ],
     },

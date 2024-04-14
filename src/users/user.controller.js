@@ -12,8 +12,7 @@ export const getUsers = async (req, res) => {
         const pageElements = req.query.limit;
         const actualPage = req.query.page;
         const skip = (actualPage - 1) * pageElements;
-        console.log(pageElements)
-        console.log(actualPage)
+
         //Retrieve data
         const userRole = req.tokenData.roleName;
         //Filter
@@ -107,7 +106,7 @@ export const getUserProfileById = async (req, res) => {
     try {
         const userId = req.tokenData.userId
         const userIdToBring = req.params.userId
-        console.log(userIdToBring)
+
 
         const user = await User
             .findById(userIdToBring)
@@ -151,7 +150,7 @@ export const updateUserProfile = async (req, res) => {
         if (!firstName && !lastName && !email) {
             throw new Error("You should to introuce any data to update")
         }
-        console.log(lastName.length)
+
         if (!firstName) {
             firstName = exist.firstName
         }
@@ -220,7 +219,7 @@ export const deleteUserById = async (req, res) => {
         const userLoged = req.tokenData.userId
         const roleLoged = req.tokenData.roleName
 
-        if ((userLoged !== userToRemove) && (roleLoged !== "super-admin")) {
+        if ((userLoged !== userToRemove) && (roleLoged !== "super-admin") && (roleLoged !== "admin")) {
             throw new Error("You dont have permitions to modidy this role")
         }
         if ((userLoged === userToRemove)) {
@@ -319,7 +318,7 @@ export const getPostByUserId = async (req, res) => {
 
         const posts = await Post
             .find({ userId: userId })
-            .select("-_id -userId -updatedAt")
+            .select("-userId -updatedAt")
             .populate('userId', 'firstName lastName image follower following')
 
 
@@ -366,7 +365,7 @@ export const followUserById = async (req, res) => {
         ).populate('follower', 'firstName')
 
         for (let i = 0; i < userToFollowUpdated.follower.length; i++) {
-            console.log(userToFollowUpdated.follower[i]._id.toString(), "este")
+
             if (userToFollowUpdated.follower[i]._id.toString() === userFollowerId) {
 
                 const userFollowerUpdated = await User.findOneAndUpdate(
@@ -437,7 +436,6 @@ export const getFollowers = async (req, res) => {
             .find()
             .select('-password -createdAt -updatedAt')
 
-        console.log(user, "asdasdasd")
 
         const user2 = await User
             .findById(userId)
@@ -450,11 +448,9 @@ export const getFollowers = async (req, res) => {
                 if (user[i].following[j].equals(user2._id)) {
 
                     usersFollowers.push(user[i]._id.toString())
-                    console.log(user[i]._id.toString());
                 }
             }
         }
-        console.log(usersFollowers);
 
 
         for (let i = 0; i < usersFollowers.length; i++) {
@@ -464,12 +460,6 @@ export const getFollowers = async (req, res) => {
 
             usersFollowersFinal.push(user3)
         }
-
-
-        console.log(usersFollowersFinal)
-
-
-
 
         return res.status(200).json({
             success: true,

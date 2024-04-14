@@ -29,7 +29,7 @@ export const createPost = async (req, res) => {
             userName: user.firstName
         })
         //Data response
-        console.log(newPost)
+
         const printDescription = {
             title: newPost.title,
             description: newPost.description,
@@ -70,7 +70,7 @@ export const deletePostById = async (req, res) => {
 
         const post = await Post.findById(postId)
 
-        if ((userLoged !== post.userId) && (roleLoged !== "super-admin")) {
+        if ((userLoged !== post.userId) && (roleLoged !== "super-admin") && (roleLoged !== "admin")) {
             throw new Error("You dont have permitions to modidy this role")
         }
 
@@ -78,7 +78,7 @@ export const deletePostById = async (req, res) => {
             throw new Error("Any post to delete")
         }
 
-        if ((userId !== post.userId) && ((roleLoged !== "super-admin"))) {
+        if ((userId !== post.userId) && ((roleLoged !== "super-admin") && (roleLoged !== "admin"))) {
             throw new Error("Cant delete another person post")
         }
 
@@ -122,8 +122,7 @@ export const updatePostById = async (req, res) => {
         const image = req.body.image
 
         const post = await Post.findById(postId)
-        console.log(post.userId.toString())
-        console.log(userId)
+
 
 
         if (!title && !description && !image) {
@@ -215,20 +214,20 @@ export const getPosts = async (req, res) => {
         const actualPage = req.query.page;
         const pageElements = req.query.limit;
         const skip = (actualPage - 1) * pageElements;
-        console.log(pageElements)
-        console.log(actualPage)
+
         const roleName = req.tokenData.roleName
 
         const queryFilters = {}
 
         if (req.query.title) {
-            queryFilters.title = new RegExp(req.query.title,'i');   
+            queryFilters.title = new RegExp(req.query.title, 'i');
         }
 
         const posts = await Post
             .find(queryFilters)
             .select('-password -updatedAt')
-            .populate('userId', 'firstName')
+            .populate('userId', 'firstName lastName')
+            .populate('comments.commentatorId', 'firstName')
             .skip(skip)
             .limit(pageElements);
 
@@ -237,7 +236,7 @@ export const getPosts = async (req, res) => {
         }
 
         let publicPosts = []
-        console.log(roleName)
+
         if (roleName === "super-admin" || roleName === "super") {
 
             return res.status(200).json({
@@ -256,7 +255,7 @@ export const getPosts = async (req, res) => {
                     publicPosts.push(posts[i])
                 }
             }
-            console.log(publicPosts)
+
 
             return res.status(200).json({
                 success: true,
@@ -279,10 +278,10 @@ export const getPostById = async (req, res) => {
     try {
         const postId = req.params.id
         const userId = req.tokenData.userId
-        console.log(postId)
-        console.log(userId)
+
         const post = await Post.findById(postId)
 
+        console.log(post, "este post")
         if (!post) {
             throw new Error("Any post to retrieve")
         }
@@ -370,11 +369,16 @@ export const postComment = async (req, res) => {
         const postId = req.params.id
         const commentatorId = req.tokenData.userId
         const commentary = req.body.commentary
+        console.log(postId)
+        console.log(commentatorId)
+        console.log(commentary)
 
         const post = await Post.findById(postId)
         const user = await User.findById(commentatorId)
 
-        post.comments.push({ commentatorName: user.firstName, commentary: commentary })
+        console.log(post)
+        console.log(user)
+        post.comments.push({ commentatorName: user.firstName, commentary: commentary, commentatorId: commentatorId })
         await post.save();
 
         const post2 = await Post.findById(postId)

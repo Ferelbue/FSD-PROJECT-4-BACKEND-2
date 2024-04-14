@@ -83,7 +83,7 @@ export const seedDatabase = async () => {
                 userId: usersId[Math.floor(Math.random() * usersId.length)],
                 comments: {
                     commentatorId: usersId[Math.floor(Math.random() * usersId.length)],
-                    commentary: faker.lorem.paragraphs({ min: 1, max: 3 })
+                    commentary: faker.lorem.sentence()
                 },
                 like: [usersId[Math.floor(Math.random() * usersId.length)], usersId[Math.floor(Math.random() * usersId.length)], usersId[Math.floor(Math.random() * usersId.length)]]
             })
